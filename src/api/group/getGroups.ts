@@ -1,3 +1,4 @@
+import { hookApi } from "api/hookApi";
 import { IPaginate } from "api/paginate/interface/paginate.interface";
 import axios from "axios";
 
@@ -6,5 +7,6 @@ export const getGroups = async (
 ) => {
   const a: any = params;
   const query = new URLSearchParams(a).toString();
-  return await axios.get(`${process.env.REACT_APP_SERVER_URL}/groups?${query}`);
+
+  return await hookApi("get", `groups?${query}`);
 };

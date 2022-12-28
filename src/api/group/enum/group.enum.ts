@@ -1,4 +1,4 @@
 export enum GroupEnum {
-    GOLOGIN = "GOLOGIN",
-    NONE = "NONE",
-  }
+  NONE = "none",
+  GOLOGIN = "gologin",
+}

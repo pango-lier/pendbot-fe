@@ -1,5 +1,23 @@
+import { hookApi } from "api/hookApi";
 import axios from "axios";
+export interface ICreateAccount {
+  name: string;
 
-export const createAccount = async (params: any) => {
-  return await axios.post(`${process.env.REACT_APP_SERVER_URL}/accounts`, params);
+  active?: boolean;
+
+  proxyId?: string;
+
+  proxyType?: string;
+
+  groupId?: number | string | null;
+
+  userId?: number;
+}
+
+export const createAccount = async (params: ICreateAccount) => {
+  return await hookApi("post", `accounts`, {
+    params,
+    _success: true,
+    title: "Create accounts",
+  });
 };

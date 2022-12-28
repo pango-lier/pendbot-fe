@@ -1,50 +1,91 @@
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
-import { COLUMNS, UserI } from './columns';
+import React, { Fragment, useEffect, useMemo, useState } from "react";
+import { COLUMNS, IAccount } from "./columns";
 import {
   ExpandedState,
   flexRender,
   getCoreRowModel,
   getExpandedRowModel,
   useReactTable,
-} from '@tanstack/react-table';
-import { Table } from 'reactstrap';
-import Group from './sub';
-import { notifyError } from 'utility/notify';
+} from "@tanstack/react-table";
+import { Table } from "reactstrap";
+import IconTextPagination from "./PaginationIconText";
+import { notifyError } from "utility/notify";
+import { ACTION_ENUM } from "utility/enum/actions";
 
-import IconTextPagination from './PaginationIconText';
-import { getUsers } from 'api/user/getUsers';
+import { getAccounts } from "api/account/getAccounts";
+import ModalAccount from "./actions/ModalAccount";
+
 const BaseTable = () => {
-  const [data, setData] = useState<UserI[]>([]);
+  const [isOpenModalGroup, setIsOpenModalGroup] = useState<boolean>(false);
+  const [row, setRow] = useState<IAccount | undefined>();
+  const [data, setData] = useState<IAccount[]>([]);
   const [expanded, setExpanded] = React.useState<ExpandedState>({});
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [perPage, setPerPage] = useState<number>(100);
-  const [pageCount, setPageCount] = useState<number>(10);
+  const [perPage, setPerPage] = useState<number>(10);
+  const [total, setTotal] = useState<number>(0);
+  const [action, setAction] = useState<ACTION_ENUM>(ACTION_ENUM.None);
+
+  const onCreateHandle = () => {
+    setAction(ACTION_ENUM.Create);
+    setRow(undefined);
+    setIsOpenModalGroup(true);
+  };
+
+  const onEditHandle = (row) => {
+    setRow(row);
+    setAction(ACTION_ENUM.Edit);
+    setIsOpenModalGroup(true);
+  };
+  const onDeleteHandle = (row) => {
+    setRow(row);
+    setAction(ACTION_ENUM.Delete);
+    setIsOpenModalGroup(true);
+  };
+  const onHandleModal = (row) => {
+    if (action === ACTION_ENUM.Create) {
+      const _data = [...data];
+      _data.unshift(row);
+      setData(_data);
+    } else if (action === ACTION_ENUM.Edit) {
+      const _data = data.map((i) => {
+        if (i.id === row.id) i = row;
+        return i;
+      });
+      setData(_data);
+    } else if (action === ACTION_ENUM.Delete) {
+      let _data = data.filter((i) => i.id !== row.id);
+      console.log(_data);
+      setData(_data);
+    }
+    setIsOpenModalGroup(false);
+  };
 
   const onPageChange = (selectedItem: { selected: number }) => {
     setCurrentPage(selectedItem.selected);
     fetchData({
-      limit: perPage.toString(),
-      offset: (selectedItem.selected * perPage).toString(),
+      limit: perPage,
+      offset: selectedItem.selected * perPage,
     });
   };
-  const fetchData = async (params: any) => { 
-    try {
-      const response = await getUsers(params);
-      setData(response.data[0]);
-      setPageCount(response.data[1] / perPage);
-    } catch (error) {
-      notifyError(error);
-    }
+
+  const fetchData = async ({ limit, offset }) => {
+    const response = await getAccounts({
+      limit,
+      offset,
+    });
+    setData(response.data.result);
+    setTotal(response.data.result.total);
   };
-  // useEffect(() => {
-  //   fetchData({
-  //     limit: perPage.toString(),
-  //     offset: (currentPage * perPage).toString(),
-  //   });
-  // }, []);
+  useEffect(() => {
+    // fetchData();
+  }, []);
+
   const table = useReactTable({
     data: useMemo(() => data, [data]),
-    columns: useMemo(() => COLUMNS, []),
+    columns: useMemo(
+      () => COLUMNS(onCreateHandle, onEditHandle, onDeleteHandle),
+      []
+    ),
     state: {
       expanded,
     },
@@ -54,11 +95,11 @@ const BaseTable = () => {
     getExpandedRowModel: getExpandedRowModel(),
     debugTable: true,
   });
-
+  const rerender = React.useReducer(() => ({}), {})[1];
   return (
     <>
       <div>
-        <Table striped>
+        <Table>
           <thead className="table-dark">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -67,9 +108,9 @@ const BaseTable = () => {
                     {...{
                       key: header.id,
                       style: {
-                        width: header.getSize(),
-                        maxWidth: header.getSize(),
-                        minWidth: header.getSize(),
+                        width: header.column.columnDef.size,
+                        maxWidth: header.column.columnDef.maxSize,
+                        minWidth: header.column.columnDef.minSize,
                       },
                     }}
                   >
@@ -77,7 +118,7 @@ const BaseTable = () => {
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext(),
+                          header.getContext()
                         )}
                   </th>
                 ))}
@@ -93,27 +134,19 @@ const BaseTable = () => {
                       {...{
                         key: cell.id,
                         style: {
-                          width: cell.column.getSize(),
-                          maxWidth: cell.column.getSize(),
-                          minWidth: cell.column.getSize(),
+                          width: cell.column.columnDef.size,
+                          maxWidth: cell.column.columnDef.maxSize,
+                          minWidth: cell.column.columnDef.minSize,
                         },
                       }}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </td>
                   ))}
                 </tr>
-                {row.getIsExpanded() && (
-                  <tr>
-                    {/* 2nd row is a custom 1 cell row */}
-                    <td colSpan={row.getVisibleCells().length}>
-                      <Group />
-                    </td>
-                  </tr>
-                )}
               </Fragment>
             ))}
           </tbody>
@@ -135,8 +168,22 @@ const BaseTable = () => {
           </tfoot> */}
         </Table>
         <div className="h-4" />
-        <IconTextPagination onPageChange={onPageChange} pageCount={pageCount} />
+        <div className="paginate-relative ">
+          <IconTextPagination
+            onPageChange={onPageChange}
+            pageCount={total / perPage}
+          />
+        </div>
       </div>
+      {isOpenModalGroup && (
+        <ModalAccount
+          row={row}
+          onHandleModal={onHandleModal}
+          action={action}
+          isOpenModalGroup={isOpenModalGroup}
+          setIsOpenModalGroup={(value) => setIsOpenModalGroup(value)}
+        />
+      )}
     </>
   );
 };

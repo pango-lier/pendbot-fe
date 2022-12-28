@@ -12,15 +12,22 @@ import {
 } from "reactstrap";
 import { ACTION_ENUM } from "utility/enum/actions";
 import { notifyError, notifySuccess } from "utility/notify";
-import { IGroup } from "../../columns";
-import { IAccount } from "../components/columns";
+
 import { createAccount } from "api/account/createAccount";
 import { updateAccount } from "api/account/updateAccount";
 import { deleteAccount } from "api/account/deleteAccount";
+import { IAccount } from "../columns";
+import { GroupEnum } from "api/group/enum/group.enum";
+import { getGroups } from "api/group/getGroups";
+
+interface IGroupSelect {
+  value: number;
+  label: string;
+  id: number;
+}
 
 interface IModalIAccountProps {
   row: IAccount | undefined;
-  group: IGroup;
   isOpenModalGroup: boolean;
   setIsOpenModalGroup: Function;
   onHandleModal: Function;
@@ -29,13 +36,14 @@ interface IModalIAccountProps {
 const ModalAccount = ({
   isOpenModalGroup,
   setIsOpenModalGroup,
-  group,
   row,
   onHandleModal,
   action,
 }: IModalIAccountProps) => {
+  const [group, setGroup] = useState<IGroupSelect>();
+  const [groupOptions, setGroupOptions] = useState<IGroupSelect[]>();
   const [name, setName] = useState<string>("");
-  const [active, setActive] = useState<number>(1);
+  const [active, setActive] = useState<boolean>(true);
   const [proxyId, setProxyId] = useState<string>("");
   const [proxyType, setProxyType] = useState<string>("");
   const [styleAction, setStyleAction] = useState<
@@ -43,18 +51,45 @@ const ModalAccount = ({
   >();
 
   useEffect(() => {
-    console.log(row);
+    fetchGroups();
     if (row) {
       setName(row.name);
-      setActive(row.active ? 1 : 0);
+      setActive(row.active);
       setProxyId(row.proxyId);
       setProxyType(row.proxyType);
     }
-  }, [row]);
+  }, []);
+  const fetchGroups = async () => {
+    const groups = await getGroups();
+    setGroupOptions(
+      groups.data.result?.map((i) => {
+        return {
+          id: i.id,
+          value: i.id,
+          label: i.name,
+        };
+      })
+    );
+    if (row && row.groupId) {
+      const fGroup = groups.data.result?.find((i) => i.id === row.groupId);
+      if (fGroup)
+        setGroup({
+          id: fGroup.id,
+          value: fGroup.id,
+          label: fGroup.name,
+        });
+    }
+  };
   useEffect(() => {
     if (action === ACTION_ENUM.Delete)
       setStyleAction({ pointerEvents: "none", opacity: "0.7" });
   }, [action]);
+
+  const onChangeGroup = (e) => {
+    setGroup(e);
+    console.log(e);
+    // groupOptions
+  };
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e && e?.target) {
@@ -63,7 +98,7 @@ const ModalAccount = ({
   };
   const onChangeActive = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e && e?.target) {
-      setActive(parseInt(e.target.value));
+      setActive(!active);
     }
   };
   const onChangeProxyId = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +109,7 @@ const ModalAccount = ({
 
   const onChangeProxyType = (e) => {
     if (e && e?.target) {
-      setProxyType(e.value);
+      setProxyType(e.target.value);
     }
   };
 
@@ -85,36 +120,35 @@ const ModalAccount = ({
       case ACTION_ENUM.Create:
         const account = await createAccount({
           name,
-          active: active === 1,
+          active: active,
           proxyId,
           proxyType,
-          groupId: group.id,
+          groupId: group?.id || null,
         });
         setIsOpenModalGroup(!isOpenModalGroup);
-        onHandleModal(account.data.createOneAccountDto);
+        console.log(account);
+        onHandleModal(account.data);
         break;
       case ACTION_ENUM.Edit:
         if (row?.id) {
           const update = await updateAccount(+row?.id, {
             name,
-            active: active === 1,
+            active: active,
             proxyId,
             proxyType,
-            groupId: group?.id || undefined,
+            groupId: group?.id || null,
           });
           setIsOpenModalGroup(!isOpenModalGroup);
 
           onHandleModal(update.data);
         }
-
         break;
       case ACTION_ENUM.Delete:
         if (row?.id) {
-          const destroy = await deleteAccount(+row.id);
+          await deleteAccount(+row.id);
           setIsOpenModalGroup(!isOpenModalGroup);
-          onHandleModal(destroy.data);
+          onHandleModal({ id: row.id });
         }
-
         break;
       default:
         break;
@@ -144,7 +178,19 @@ const ModalAccount = ({
                 onChange={(e) => onChangeName(e)}
               />
             </div>
-
+            <div className="mb-1">
+              <Label className="form-label" for="register-name">
+                Name
+              </Label>
+              <ReactSelect
+                defaultValue={group}
+                value={group}
+                className="react-select"
+                options={groupOptions}
+                onChange={(e) => onChangeGroup(e)}
+                isClearable={true}
+              />
+            </div>
             <div className="mb-1">
               <Label className="form-label" for="proxy-id">
                 Proxy Id
@@ -175,10 +221,10 @@ const ModalAccount = ({
               </Label>
               <div className="form-switch form-check-primary">
                 <Input
+                  checked={active}
                   type="switch"
                   id="switch-primary"
                   name="primary"
-                  defaultValue={active}
                   onChange={(e) => onChangeActive(e)}
                 />
               </div>
