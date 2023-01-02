@@ -2,11 +2,11 @@ import { lazy } from 'react'
 
 const ConnectRoutes = [
   {
-    path: '/connects',
-    component: lazy(() => import('../../views/pages/Connect')),
+    path: '/crawler-link',
+    component: lazy(() => import('../../views/pages/CrawlerLink')),
   },
   {
-    path: '/connects/register',
+    path: '/crawler-config',
     component: lazy(() => import('../../views/pages/authentication/Register')),
     layout: 'BlankLayout',
     meta: {
