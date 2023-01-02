@@ -73,20 +73,12 @@ export const COLUMNS = (
       minSize: 10,
       maxSize: 20,
     }),
-    columnHelper.accessor((row) => row.name, {
-      id: "name",
-      cell: (info) => <i>{info.getValue()}</i>,
-      header: () => <span>Name</span>,
-      size: 70,
-      minSize: 50,
-      maxSize: 100,
-    }),
     columnHelper.accessor("name", {
       header: () => "Name",
       cell: (info) => (
         <Tooltip
           id={"gr" + info.row.id}
-          message={info.row.original.name ?? ""}
+          message={info.row.original?.name ?? ""}
         />
       ),
       size: 70,

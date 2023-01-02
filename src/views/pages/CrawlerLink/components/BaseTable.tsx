@@ -11,9 +11,9 @@ import { Table } from "reactstrap";
 import IconTextPagination from "./PaginationIconText";
 import { ACTION_ENUM } from "utility/enum/actions";
 
-import { getAccounts } from "api/account/getAccounts";
 import ModalAccount from "./actions/ModalAccount";
 import { ICrawlerLink } from "api/crawler/crawler-link/type/crawler-link.interface";
+import { getCrawlerLink } from "api/crawler/crawler-link/gets";
 
 const BaseTable = () => {
   const [isOpenModalGroup, setIsOpenModalGroup] = useState<boolean>(false);
@@ -69,12 +69,13 @@ const BaseTable = () => {
   };
 
   const fetchData = async ({ limit, offset }) => {
-    const response = await getAccounts({
+    const response = await getCrawlerLink({
       limit,
       offset,
     });
+    console.log(response.data);
     setData(response.data.result);
-    setTotal(response.data.result.total);
+    setTotal(response.data.total);
   };
   useEffect(() => {
     // fetchData();
@@ -95,7 +96,6 @@ const BaseTable = () => {
     getExpandedRowModel: getExpandedRowModel(),
     debugTable: true,
   });
-  const rerender = React.useReducer(() => ({}), {})[1];
   return (
     <>
       <div>

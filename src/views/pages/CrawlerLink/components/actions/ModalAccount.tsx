@@ -17,6 +17,10 @@ import { deleteCrawlerLink } from "api/crawler/crawler-link/delete";
 import { updateCrawlerLink } from "api/crawler/crawler-link/update";
 import { createCrawlerLink } from "api/crawler/crawler-link/create";
 import { CrawlerLinkEnum } from "api/crawler/crawler-link/enum/crawler-link.enum";
+import {
+  enumToFormatSelectOptions,
+  enumToFormatSelected,
+} from "utility/helper/enum";
 
 interface IGroupSelect {
   value: number;
@@ -38,119 +42,64 @@ const ModalAccount = ({
   onHandleModal,
   action,
 }: IModalIAccountProps<ICrawlerLink>) => {
-  const [group, setGroup] = useState<IGroupSelect>();
-  const [groupOptions, setGroupOptions] = useState<IGroupSelect[]>();
-  const [name, setName] = useState<string>("");
-  const [active, setActive] = useState<boolean>(true);
-  const [proxyId, setProxyId] = useState<string>("");
-  const [proxyType, setProxyType] = useState<string>("");
   const [styleAction, setStyleAction] = useState<
     React.CSSProperties | undefined
   >();
-
+  const [type, setType] = useState<CrawlerLinkEnum>(CrawlerLinkEnum.None);
+  const [data, setData] = useState<ICrawlerLink>();
   useEffect(() => {
     // fetchGroups();
     if (row) {
-      setName(row.name);
-      // setActive(row.active);
-      // setProxyId(row.proxyId);
-      // setProxyType(row.proxyType);
+      setData(row);
+      setType(row?.type || CrawlerLinkEnum.None);
     }
   }, []);
-  // const fetchGroups = async () => {
-  //   const groups = await getGroups();
-  //   setGroupOptions(
-  //     groups.data.result?.map((i) => {
-  //       return {
-  //         id: i.id,
-  //         value: i.id,
-  //         label: i.name,
-  //       };
-  //     })
-  //   );
-  //   if (row && row.groupId) {
-  //     const fGroup = groups.data.result?.find((i) => i.id === row.groupId);
-  //     if (fGroup)
-  //       setGroup({
-  //         id: fGroup.id,
-  //         value: fGroup.id,
-  //         label: fGroup.name,
-  //       });
-  //   }
-  // };
+
   useEffect(() => {
     if (action === ACTION_ENUM.Delete)
       setStyleAction({ pointerEvents: "none", opacity: "0.7" });
   }, [action]);
 
-  const onChangeGroup = (e) => {
-    setGroup(e);
+  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>, name) => {
+    if (e && e?.target) {
+      const _d: any = { ...data };
+      setData({ ..._d, [name]: e.target.value });
+    }
+  };
+
+  const onChangeType = (e) => {
     console.log(e);
-    // groupOptions
+    setType(e.value);
+    setData({ ...data, type: e.value });
   };
-
-  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e && e?.target) {
-      setName(e.target.value);
-    }
-  };
-  const onChangeActive = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e && e?.target) {
-      setActive(!active);
-    }
-  };
-  const onChangeProxyId = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e && e?.target) {
-      setProxyId(e.target.value);
-    }
-  };
-
-  const onChangeProxyType = (e) => {
-    if (e && e?.target) {
-      setProxyType(e.target.value);
-    }
-  };
-
   const onAccept: React.FormEventHandler<HTMLButtonElement> = async (
     e: React.FormEvent<HTMLButtonElement>
   ) => {
     switch (action) {
       case ACTION_ENUM.Create:
+        if (!data?.name) return;
         const account = await createCrawlerLink({
-          name: "",
-
-          description: "string",
-
-          status: "string",
-
-          type: CrawlerLinkEnum.YoutubeShort,
-
-          target: "string",
-
-          socialId: "number | string",
-
-          accountId: "umber | string",
+          name: data?.name,
+          description: data.description,
+          type: data.type,
+          target: data.target,
+          socialId: data.socialId,
+          accountId: data.accountId,
         });
         setIsOpenModalGroup(!isOpenModalGroup);
         console.log(account);
         onHandleModal(account.data);
         break;
       case ACTION_ENUM.Edit:
+        if (!data?.name) return;
         if (row?.id) {
           const update = await updateCrawlerLink(+row?.id, {
-            name: "",
-
-            description: "string",
-
-            status: "string",
-
-            type: CrawlerLinkEnum.YoutubeShort,
-
-            target: "string",
-
-            socialId: "number | string",
-
-            accountId: "umber | string",
+            name: data?.name,
+            description: data.description,
+            type: data.type,
+            target: data.target,
+            socialId: data.socialId,
+            accountId: data.accountId,
           });
           setIsOpenModalGroup(!isOpenModalGroup);
 
@@ -184,64 +133,52 @@ const ModalAccount = ({
                 Name
               </Label>
               <Input
-                defaultValue={name}
+                value={data?.name || ""}
                 type="text"
                 id="register-name"
-                placeholder="johndoe"
+                placeholder="name"
                 autoFocus
-                onChange={(e) => onChangeName(e)}
+                onChange={(e) => onChangeName(e, "name")}
               />
             </div>
             <div className="mb-1">
-              <Label className="form-label" for="register-name">
-                Name
+              <Label className="form-label" for="register-description">
+                Description
+              </Label>
+              <Input
+                value={data?.description || ""}
+                type="text"
+                id="register-description"
+                placeholder="description"
+                autoFocus
+                onChange={(e) => onChangeName(e, "description")}
+              />
+            </div>
+            <div className="mb-1">
+              <Label className="form-label" for="register-type">
+                Crawler Link Type
               </Label>
               <ReactSelect
-                defaultValue={group}
-                value={group}
+                id="register-type"
+                value={enumToFormatSelected(CrawlerLinkEnum, type)}
                 className="react-select"
-                options={groupOptions}
-                onChange={(e) => onChangeGroup(e)}
+                options={enumToFormatSelectOptions(CrawlerLinkEnum)}
+                onChange={(e) => onChangeType(e)}
                 isClearable={true}
               />
             </div>
             <div className="mb-1">
-              <Label className="form-label" for="proxy-id">
-                Proxy Id
+              <Label className="form-label" for="register-target">
+                Target
               </Label>
               <Input
-                defaultValue={proxyId}
-                id="proxy-id"
+                value={data?.target || ""}
                 type="text"
-                placeholder="Proxy Id ..."
-                onChange={(e) => onChangeProxyId(e)}
+                id="register-target"
+                placeholder="target"
+                autoFocus
+                onChange={(e) => onChangeName(e, "target")}
               />
-            </div>
-            <div className="mb-1">
-              <Label className="form-label" for="proxy-type">
-                Proxy Type
-              </Label>
-              <Input
-                defaultValue={proxyType}
-                id="proxy-type"
-                type="text"
-                placeholder="proxy type ..."
-                onChange={(e) => onChangeProxyType(e)}
-              />
-            </div>
-            <div className="mb-1">
-              <Label for="switch-primary" className="form-check-label">
-                Active account
-              </Label>
-              <div className="form-switch form-check-primary">
-                <Input
-                  checked={active}
-                  type="switch"
-                  id="switch-primary"
-                  name="primary"
-                  onChange={(e) => onChangeActive(e)}
-                />
-              </div>
             </div>
           </Form>
         </ModalBody>

@@ -9,7 +9,7 @@ export interface IOptionsHookApi {
 }
 
 export const hookApi = async (
-  method: "get" | "post" | "delete" | "put" | "path",
+  method: "get" | "post" | "delete" | "put" | "patch",
   uri,
   { _error, _success, title, params }: IOptionsHookApi = {
     _error: true,

@@ -1,6 +1,6 @@
 import { lazy } from 'react'
 
-const ConnectRoutes = [
+const CrawlerRoutes = [
   {
     path: '/crawler-link',
     component: lazy(() => import('../../views/pages/CrawlerLink')),
@@ -16,4 +16,4 @@ const ConnectRoutes = [
 
 ]
 
-export default ConnectRoutes
+export default CrawlerRoutes

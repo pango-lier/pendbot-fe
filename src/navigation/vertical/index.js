@@ -8,10 +8,10 @@ export default [
     navLink: '/home'
   },
   {
-    id: 'connect',
-    title: 'Connect',
+    id: 'Crawler',
+    title: 'Crawler-Link',
     icon: <ExternalLink size={20} />,
-    navLink: '/connects'
+    navLink: '/crawler-link'
   },
   {
     id: 'users',

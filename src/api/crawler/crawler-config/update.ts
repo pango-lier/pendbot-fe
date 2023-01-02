@@ -9,7 +9,7 @@ export interface IUpdateCrawlerConfig {
 }
 
 export const createCrawlerConfig = async (params: IUpdateCrawlerConfig) => {
-  return await hookApi("path", `crawler-configs`, {
+  return await hookApi("patch", `crawler-configs`, {
     params,
     _success: true,
     title: "Update Crawler Config",

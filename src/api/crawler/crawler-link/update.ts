@@ -1,4 +1,3 @@
-import axios from "axios";
 import { CrawlerLinkEnum } from "./enum/crawler-link.enum";
 import { hookApi } from "api/hookApi";
 
@@ -30,7 +29,7 @@ export const updateCrawlerLink = async (
   id: number,
   params: IUpdateCrawlerLink
 ) => {
-  return await hookApi("path", `crawler-links/${id}`, {
+  return await hookApi("patch", `crawler-links/${id}`, {
     params,
     _success: true,
     title: "Create Crawler Link",

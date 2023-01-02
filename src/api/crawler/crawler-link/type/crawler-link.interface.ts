@@ -5,9 +5,9 @@ export interface ICrawlerLink {
   expanded?: any;
   actions?: any;
 
-  id: string | number;
+  id?: string | number;
 
-  name: string;
+  name?: string;
 
   description?: string;
 
@@ -23,5 +23,5 @@ export interface ICrawlerLink {
 
   createdAt?: Date;
 
-  crawlerConfigs: Array<any>;
+  crawlerConfigs?: Array<any>;
 }
