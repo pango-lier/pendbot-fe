@@ -1,5 +1,6 @@
 import React from "react";
 import { UncontrolledTooltip } from "reactstrap";
+import copyText from "utility/helper/copyText";
 
 export interface ITooltip {
   message: string;
@@ -19,7 +20,9 @@ export const Tooltip: React.FC<ITooltip> = (props) => {
 
   return (
     <>
-      <div id={id}>{message}</div>
+      <div className="cursor-pointer" onClick={() => copyText(fullMessage ? fullMessage : message)} id={id}>
+        {message}
+      </div>
       {ready && (
         <UncontrolledTooltip placement="left" target={id}>
           {fullMessage ? fullMessage : message}

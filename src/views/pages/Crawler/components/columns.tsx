@@ -4,14 +4,19 @@ import { Button } from "reactstrap";
 import { Tooltip } from "views/pages/components/Tooltip";
 import Action from "./Action";
 import CheckboxTable from "./CheckboxTable";
-import { ICrawlerLink } from "api/crawler/crawler-link/type/crawler-link.interface";
+import { ICrawler } from "api/crawler/crawler/type/crawler.interface";
+interface ICrawlerTable extends ICrawler {
+  checkbox?: any;
+  expanded?: any;
+  actions?: any;
+}
 
-const columnHelper = createColumnHelper<ICrawlerLink>();
+const columnHelper = createColumnHelper<ICrawlerTable>();
 
 export const COLUMNS = (
   onCreateHandle: Function,
   onEditHandle: Function,
-  onDeleteHandle: ColumnMeta
+  onDeleteHandle: Function
 ) => {
   return [
     columnHelper.accessor((row) => row.checkbox, {
@@ -106,12 +111,18 @@ export const COLUMNS = (
       size: 5,
       minSize: 50,
       maxSize: 150,
-      meta:{
-        sand:2
-      }
+      meta: {
+        sand: 2,
+      },
     }),
-    columnHelper.accessor("target", {
-      header: () => <span>Active</span>,
+    columnHelper.accessor("linkDownloaded", {
+      header: () => <span>Download</span>,
+      size: 15,
+      minSize: 50,
+      maxSize: 150,
+    }),
+    columnHelper.accessor("links", {
+      header: () => <span>target</span>,
       size: 15,
       minSize: 50,
       maxSize: 150,

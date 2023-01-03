@@ -11,9 +11,33 @@ PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
 
 .tooltip .tooltip-inner {
-	width: 100%;
-	max-width: 450px !important;
-	max-height: 450px !important;
-	height: auto;
-	display: block;
-  }
+  width: 100%;
+  max-width: 450px !important;
+  max-height: 450px !important;
+  height: auto;
+  display: block;
+}
+
+.rt-td {
+  padding: 0 0.9375rem;
+  height: auto;
+  line-height: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.rt-th {
+  height: 48px;
+  line-height: 48px;
+  padding: 0 0.9375rem;
+  font-weight: 700;
+  text-align: left;
+  border: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.rt-tbody {
+  //	display: inline-block;
+  //	max-height: 75vh;
+  //	overflow-y: scroll;
+  min-height: 30vh;
+}

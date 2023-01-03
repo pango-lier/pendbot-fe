@@ -12,13 +12,13 @@ import IconTextPagination from "./PaginationIconText";
 import { ACTION_ENUM } from "utility/enum/actions";
 
 import ModalAccount from "./actions/ModalAccount";
-import { ICrawlerLink } from "api/crawler/crawler-link/type/crawler-link.interface";
-import { getCrawlerLink } from "api/crawler/crawler-link/gets";
+import { ICrawler } from "api/crawler/crawler/type/crawler.interface";
+import { getCrawler } from "api/crawler/crawler/gets";
 
 const BaseTable = () => {
   const [isOpenModalGroup, setIsOpenModalGroup] = useState<boolean>(false);
-  const [row, setRow] = useState<ICrawlerLink | undefined>();
-  const [data, setData] = useState<ICrawlerLink[]>([]);
+  const [row, setRow] = useState<ICrawler | undefined>();
+  const [data, setData] = useState<ICrawler[]>([]);
   const [expanded, setExpanded] = React.useState<ExpandedState>({});
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [perPage, setPerPage] = useState<number>(10);
@@ -69,7 +69,7 @@ const BaseTable = () => {
   };
 
   const fetchData = async ({ limit, offset }) => {
-    const response = await getCrawlerLink({
+    const response = await getCrawler({
       limit,
       offset,
     });
@@ -158,22 +158,6 @@ const BaseTable = () => {
               </Fragment>
             ))}
           </tbody>
-          {/* <tfoot>
-            {table.getFooterGroups().map((footerGroup) => (
-              <tr key={footerGroup.id}>
-                {footerGroup.headers.map((header) => (
-                  <th key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.footer,
-                          header.getContext()
-                        )}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </tfoot> */}
         </Table>
         <div className="h-4" />
         <div className="paginate-relative ">

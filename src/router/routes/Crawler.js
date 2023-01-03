@@ -6,6 +6,10 @@ const CrawlerRoutes = [
     component: lazy(() => import('../../views/pages/CrawlerLink')),
   },
   {
+    path: '/crawler',
+    component: lazy(() => import('../../views/pages/Crawler')),
+  },
+  {
     path: '/crawler-config',
     component: lazy(() => import('../../views/pages/authentication/Register')),
     layout: 'BlankLayout',
