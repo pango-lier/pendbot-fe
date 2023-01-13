@@ -23,7 +23,7 @@ const IconTextPagination = ({
   pageCount,
 }: IconTextPaginationProps) => {
   return (
-    <div className="mt-2 mr-5" style={{ paddingRight: "40px" }}>
+    <div className="mt-2 mr-5">
       <ReactPaginate
         initialPage={0}
         pageCount={pageCount}

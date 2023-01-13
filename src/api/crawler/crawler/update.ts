@@ -1,11 +1,12 @@
 import { hookApi } from "api/hookApi";
+import { CrawlerLinkStatusEnum } from "./enum/crawler-link.enum";
 
 export interface UpdateCrawlerDto {
   name: string;
 
   type?: string;
 
-  status?: string;
+  status?: CrawlerLinkStatusEnum;
 
   meta?: string;
 

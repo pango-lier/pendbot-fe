@@ -45,13 +45,13 @@ const ModalAccount = ({
   const [styleAction, setStyleAction] = useState<
     React.CSSProperties | undefined
   >();
-  const [type, setType] = useState<CrawlerLinkEnum>(CrawlerLinkEnum.None);
+  const [type, setType] = useState<CrawlerLinkEnum>();
   const [data, setData] = useState<ICrawlerLink>();
   useEffect(() => {
     // fetchGroups();
     if (row) {
       setData(row);
-      setType(row?.type || CrawlerLinkEnum.None);
+      setType(row?.type || undefined);
     }
   }, []);
 

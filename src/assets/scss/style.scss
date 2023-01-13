@@ -26,8 +26,8 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
   overflow: hidden;
 }
 .rt-th {
-  height: 48px;
-  line-height: 48px;
+  height: 40px;
+  line-height: 40px;
   padding: 0 0.9375rem;
   font-weight: 700;
   text-align: left;
@@ -40,4 +40,16 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
   //	max-height: 75vh;
   //	overflow-y: scroll;
   min-height: 30vh;
+}
+table > :not(caption) > * > * {
+  padding: 2px 15px !important;
+}
+.paginate-relative {
+  position:fixed;
+  right: 40px;
+  bottom: 40px;
+}
+.table-card{
+  min-height: 25vh;
+  max-height: 85vh;
 }

@@ -1,12 +1,12 @@
 import { hookApi } from "api/hookApi";
 import axios from "axios";
-import { CrawlerLinkEnum } from "./enum/crawler-link.enum";
+import { CrawlerLinkEnum, CrawlerLinkStatusEnum } from "./enum/crawler-link.enum";
 export interface ICreateCrawlerDto {
   name: string;
 
   type?: string;
 
-  status?: string;
+  status?: CrawlerLinkStatusEnum;
 
   meta?: string;
 

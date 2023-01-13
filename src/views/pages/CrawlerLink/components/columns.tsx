@@ -11,7 +11,7 @@ const columnHelper = createColumnHelper<ICrawlerLink>();
 export const COLUMNS = (
   onCreateHandle: Function,
   onEditHandle: Function,
-  onDeleteHandle: ColumnMeta
+  onDeleteHandle: Function
 ) => {
   return [
     columnHelper.accessor((row) => row.checkbox, {
@@ -106,9 +106,9 @@ export const COLUMNS = (
       size: 5,
       minSize: 50,
       maxSize: 150,
-      meta:{
-        sand:2
-      }
+      meta: {
+        sand: 2,
+      },
     }),
     columnHelper.accessor("target", {
       header: () => <span>Active</span>,
