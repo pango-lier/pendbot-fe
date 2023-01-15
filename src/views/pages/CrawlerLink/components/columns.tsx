@@ -77,7 +77,7 @@ export const COLUMNS = (
       header: () => "Name",
       cell: (info) => (
         <Tooltip
-          id={"gr" + info.row.id}
+          id={"name" + info.row.id}
           message={info.row.original?.name ?? ""}
         />
       ),
@@ -111,7 +111,13 @@ export const COLUMNS = (
       },
     }),
     columnHelper.accessor("target", {
-      header: () => <span>Active</span>,
+      header: () => <span>target</span>,
+      cell: (info) => (
+        <Tooltip
+          id={"target" + info.row.id}
+          message={info.row.original?.target ?? ""}
+        />
+      ),
       size: 15,
       minSize: 50,
       maxSize: 150,
