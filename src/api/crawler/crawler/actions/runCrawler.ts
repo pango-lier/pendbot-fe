@@ -1,8 +1,8 @@
 import { hookApi } from "api/hookApi";
-import { SocialEnum } from "api/social/enum";
+import { SocialEnum } from "api/socials/enum/socials.enum";
 
 export interface IRunCrawlerQueueOptionDto {
-  pushSocial?: SocialEnum;
+  pushSocial?: SocialEnum
 }
 
 export interface IRunCrawlerQueueDto {

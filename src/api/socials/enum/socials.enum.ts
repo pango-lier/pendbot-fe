@@ -5,4 +5,5 @@ export enum SocialEnum {
   TIKTOK = 'tiktok',
   YAHOO = 'yahoo',
   YOUTUBE = 'youtube',
+  TWITTER = 'twitter',
 }

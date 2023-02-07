@@ -32,6 +32,12 @@ export default [
     navLink: '/accounts'
   },
   {
+    id: 'socials',
+    title: 'Social',
+    icon: <Activity size={20} />,
+    navLink: '/socials'
+  },
+  {
     id: 'secondPage',
     title: 'Second Page',
     icon: <Mail size={20} />,

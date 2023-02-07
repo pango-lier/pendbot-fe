@@ -8,6 +8,10 @@ const CrawlerRoutes = [
   {
     path: '/crawler',
     component: lazy(() => import('../../views/pages/Crawler')),
+  }, 
+  {
+    path: '/socials',
+    component: lazy(() => import('../../views/pages/Social')),
   },
   {
     path: '/crawler-config',
