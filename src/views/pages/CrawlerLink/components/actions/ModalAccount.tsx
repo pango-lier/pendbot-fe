@@ -21,6 +21,9 @@ import {
   enumToFormatSelectOptions,
   enumToFormatSelected,
 } from "utility/helper/enum";
+import { ISocial } from "api/socials/type/socials.interface";
+import { getAll } from "api/socials/getAll";
+import { notifyError } from "utility/notify";
 
 interface IGroupSelect {
   value: number;
@@ -47,14 +50,38 @@ const ModalAccount = ({
   >();
   const [type, setType] = useState<CrawlerLinkEnum>();
   const [data, setData] = useState<ICrawlerLink>();
+  const [socials, setSocials] = useState<ISocial[]>([]);
+  const [socialSelected, setSocialSelected] = useState<any>();
   useEffect(() => {
-    // fetchGroups();
+    fetchSocialOptions();
+
     if (row) {
       setData(row);
       setType(row?.type || undefined);
     }
   }, []);
-
+  const fetchSocialOptions = async () => {
+    const res = await getAll();
+    const options = res.data.map((i) => {
+      return {
+        value: i.id,
+        label: i.username
+      }
+    })
+    setSocials(options);
+    if (row?.socials) {
+      const options = row.socials.map((i) => {
+        return {
+          value: i.id,
+          label: i.username
+        }
+      })
+      socialSelected(options)
+    }
+  }
+  const onSocial = (e) => {
+    setSocialSelected(e);
+  }
   useEffect(() => {
     if (action === ACTION_ENUM.Delete)
       setStyleAction({ pointerEvents: "none", opacity: "0.7" });
@@ -77,28 +104,33 @@ const ModalAccount = ({
   ) => {
     switch (action) {
       case ACTION_ENUM.Create:
-        if (!data?.name) return;
+        if (!data?.target) {
+          notifyError("Target is required !");
+          return;
+        }
         const account = await createCrawlerLink({
           name: data?.name,
           description: data.description,
           type: data.type,
           target: data.target,
-          socialId: data.socialId,
+          socialIds: socialSelected.map((i) => i.value),
           accountId: data.accountId,
         });
         setIsOpenModalGroup(!isOpenModalGroup);
-        console.log(account);
         onHandleModal(account.data);
         break;
       case ACTION_ENUM.Edit:
-        if (!data?.name) return;
+        if (!data?.target) {
+          notifyError("Target is required !");
+          return;
+        }
         if (row?.id) {
           const update = await updateCrawlerLink(+row?.id, {
             name: data?.name,
             description: data.description,
             type: data.type,
             target: data.target,
-            socialId: data.socialId,
+            socialIds: socialSelected.map((i) => i.value),
             accountId: data.accountId,
           });
           setIsOpenModalGroup(!isOpenModalGroup);
@@ -129,29 +161,16 @@ const ModalAccount = ({
         <ModalBody>
           <Form className="auth-register-form mt-2" style={styleAction}>
             <div className="mb-1">
-              <Label className="form-label" for="register-name">
-                Name
+              <Label className="form-label" for="register-target">
+                Target
               </Label>
               <Input
-                value={data?.name || ""}
+                value={data?.target || ""}
                 type="text"
-                id="register-name"
-                placeholder="name"
+                id="register-target"
+                placeholder="target"
                 autoFocus
-                onChange={(e) => onChangeName(e, "name")}
-              />
-            </div>
-            <div className="mb-1">
-              <Label className="form-label" for="register-description">
-                Description
-              </Label>
-              <Input
-                value={data?.description || ""}
-                type="text"
-                id="register-description"
-                placeholder="description"
-                autoFocus
-                onChange={(e) => onChangeName(e, "description")}
+                onChange={(e) => onChangeName(e, "target")}
               />
             </div>
             <div className="mb-1">
@@ -168,16 +187,17 @@ const ModalAccount = ({
               />
             </div>
             <div className="mb-1">
-              <Label className="form-label" for="register-target">
-                Target
+              <Label className="form-label" for="register-social">
+                Socials
               </Label>
-              <Input
-                value={data?.target || ""}
-                type="text"
-                id="register-target"
-                placeholder="target"
-                autoFocus
-                onChange={(e) => onChangeName(e, "target")}
+              <ReactSelect
+                id="register-social"
+                value={socialSelected}
+                className="react-select"
+                options={socials}
+                onChange={(e) => onSocial(e)}
+                isClearable={true}
+                isMulti={true}
               />
             </div>
           </Form>

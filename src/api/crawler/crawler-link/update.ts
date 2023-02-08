@@ -1,33 +1,11 @@
 import { CrawlerLinkEnum } from "./enum/crawler-link.enum";
 import { hookApi } from "api/hookApi";
+import { ICrawlerLink } from "./type/crawler-link.interface";
 
-export interface IUpdateCrawlerLink {
-  name: string;
-
-  description?: string;
-
-  status?: string;
-
-  type?: CrawlerLinkEnum;
-
-  target?: string;
-
-  socialId?: number | string;
-
-  accountId?: number | string;
-
-  deletedAt?: Date;
-
-  createdAt?: Date;
-
-  updatedAt?: Date;
-
-  crawlerConfigs?: Array<any>;
-}
 
 export const updateCrawlerLink = async (
   id: number,
-  params: IUpdateCrawlerLink
+  params: ICrawlerLink
 ) => {
   return await hookApi("patch", `crawler-links/${id}`, {
     params,

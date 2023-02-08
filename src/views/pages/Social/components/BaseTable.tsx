@@ -71,8 +71,8 @@ const BaseTable = () => {
       limit,
       offset,
     });
-    setData(response.data);
-    setTotal(response.data);
+    setData(response.data.result);
+    setTotal(response.data.total);
   };
   useEffect(() => {
     // fetchData();

@@ -1,3 +1,4 @@
+import { ISocial } from "api/socials/type/socials.interface";
 import { CrawlerLinkEnum } from "../enum/crawler-link.enum";
 
 export interface ICrawlerLink {
@@ -17,7 +18,9 @@ export interface ICrawlerLink {
 
   target?: string;
 
-  socialId?: number | string;
+  socials?: ISocial[];
+
+  socialIds?: number[];
 
   accountId?: number | string;
 
