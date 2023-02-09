@@ -1,7 +1,7 @@
 import { hookApi } from "api/hookApi";
 import { ISocialTarget } from "./type/type.interface";
 
-export const updateSocial = async (id: number, params: ISocialTarget) => {
+export const updateSocialTarget = async (id: number, params: ISocialTarget) => {
   return await hookApi("patch", `social-targets/${id}`, {
     params,
     _success: true,

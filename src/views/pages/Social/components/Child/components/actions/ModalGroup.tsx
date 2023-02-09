@@ -16,14 +16,17 @@ import {
   enumToFormatSelectOptions,
 } from "utility/helper/enum";
 import { notifyError, notifySuccess } from "utility/notify";
-import { GroupEnum } from "api/group/enum/group.enum";
-import { createGroup } from "api/group/createGroup";
-import { updateGroup } from "api/group/updateGroup";
-import { deleteGroup } from "api/group/deleteGroup";
+
+import { IRowChild } from "../columns";
+import { IRow } from "../../../columns";
+import { updateSocialTarget } from "api/socialTargets/update";
+import { deleteSocialTarget } from "api/socialTargets/delete";
+import { createSocialTarget } from "api/socialTargets/create";
+import { SocialTargetEnum } from "api/socialTargets/enum/type.enum";
 
 interface IModalGroupProps {
-  child: any;
-  row: any;
+  parent: IRow;
+  row: IRowChild | undefined;
   isOpenModalGroup: boolean;
   setIsOpenModalGroup: Function;
   action: ACTION_ENUM;
@@ -33,26 +36,39 @@ const ModalGroup = ({
   isOpenModalGroup,
   setIsOpenModalGroup,
   row,
-  child,
+  parent,
   action,
   onHandle,
 }: IModalGroupProps) => {
-  const [name, setName] = useState<string>();
+  const [type, setType] = useState<SocialTargetEnum>(SocialTargetEnum.Personal);
+
   const [styleAction, setStyleAction] = useState<
     React.CSSProperties | undefined
   >();
+  const [data, setData] = useState<IRowChild | undefined>();
   useEffect(() => {
+    // fetchGroups();
     if (row) {
-      setName(row.name);
+      setData(row);
+      setType(row?.targetType || SocialTargetEnum.Personal);
     }
-  }, [row]);
+  }, []);
+
   useEffect(() => {
     if (action === ACTION_ENUM.Delete)
       setStyleAction({ pointerEvents: "none", opacity: "0.7" });
   }, [action]);
 
-  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>, name) => {
+    if (e && e?.target) {
+      const _d: any = { ...data };
+      setData({ ..._d, [name]: e.target.value });
+    }
+  };
+
+  const onChangeType = (e) => {
+    setType(e.value);
+    setData({ ...data, targetType: e.value });
   };
 
   const onChangeGroupType = (e) => {
@@ -66,30 +82,30 @@ const ModalGroup = ({
     try {
       switch (action) {
         case ACTION_ENUM.Create:
-          // const group = await createGroup({
-          //   name,
-          //   userId: user.id,
-          // });
-          // setIsOpenModalGroup(!isOpenModalGroup);
-          // onHandle(group.data.createOneGroupDto);
+          if (!data) return;
+          const group = await createSocialTarget({
+            name: data?.name || "",
+            targetType: data?.targetType,
+            link: data?.link,
+            social: { id: parent.id },
+          });
+          setIsOpenModalGroup(!isOpenModalGroup);
+          onHandle(group.data);
 
           break;
         case ACTION_ENUM.Edit:
-          const update = await updateGroup({
-            id: row?.id,
-          });
+          if (!row?.id) return;
+          if (!data) return;
+          const update = await updateSocialTarget(row?.id, data);
           setIsOpenModalGroup(!isOpenModalGroup);
-          onHandle(update.data.updateOneGroupDto);
+          onHandle(update.data);
 
           break;
         case ACTION_ENUM.Delete:
-          const destroy = await deleteGroup({
-            variables: {
-              id: row?.id,
-            },
-          });
+          if (!row?.id) return;
+          const destroy = await deleteSocialTarget(row?.id);
           setIsOpenModalGroup(!isOpenModalGroup);
-          onHandle(destroy.data.deleteOneGroupDto);
+          onHandle(destroy.data);
 
           break;
         default:
@@ -116,23 +132,39 @@ const ModalGroup = ({
                 Name
               </Label>
               <Input
-                defaultValue={name}
+                defaultValue={data?.name}
                 type="text"
                 id="setIsOpenModalGroup-name"
                 placeholder="johndoe"
                 autoFocus
-                onChange={onChangeName}
+                onChange={(e) => onChangeName(e, "name")}
               />
             </div>
             <div className="mb-1">
-              <Label className="form-label">Basic</Label>
-              {/* <ReactSelect
-                defaultValue={enumToFormatSelected(GroupEnum, groupType)}
+              <Label className="form-label" for="register-type">
+                Crawler Link Type
+              </Label>
+              <ReactSelect
+                id="register-type"
+                value={enumToFormatSelected(SocialTargetEnum, type)}
                 className="react-select"
-                options={enumToFormatSelectOptions(GroupEnum)}
-                isClearable={false}
-                onChange={(e) => onChangeGroupType(e)}
-              /> */}
+                options={enumToFormatSelectOptions(SocialTargetEnum)}
+                onChange={(e) => onChangeType(e)}
+                isClearable={true}
+              />
+            </div>
+            <div className="mb-1">
+              <Label className="form-label" for="setIsOpenModalGroup-link">
+                Link *
+              </Label>
+              <Input
+                defaultValue={data?.link}
+                type="text"
+                id="setIsOpenModalGroup-link"
+                placeholder="url ..."
+                autoFocus
+                onChange={(e) => onChangeName(e, "link")}
+              />
             </div>
           </Form>
         </ModalBody>

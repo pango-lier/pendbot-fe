@@ -11,14 +11,15 @@ import { notifyError } from "utility/notify";
 import { Table } from "reactstrap";
 import ModalGroup from "./actions/ModalGroup";
 import { ACTION_ENUM } from "utility/enum/actions";
-import { getGroups } from "api/group/getGroups";
 import { IRow } from "../../columns";
+import { getSocialTargets } from "api/socialTargets/gets";
 
 const BaseTable = ({ social }: { social: IRow }) => {
   const [isOpenModalGroup, setIsOpenModalGroup] = useState<boolean>(false);
   const [action, setAction] = useState<ACTION_ENUM>(ACTION_ENUM.None);
-  const [row, setRow] = useState<IRowChild | undefined>();
+  const [row, setRow] = useState<IRowChild>();
   const [data, setData] = useState<IRowChild[]>([]);
+  const [total, setTotal] = useState<number>(0);
   const onCreateHandle = () => {
     setAction(ACTION_ENUM.Create);
     setRow(undefined);
@@ -55,15 +56,10 @@ const BaseTable = ({ social }: { social: IRow }) => {
   };
 
   const [expanded, setExpanded] = React.useState<ExpandedState>({});
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [perPage, setPerPage] = useState<number>(25);
+
   const fetchData = async () => {
-    try {
-      const response = await getGroups({ limit: 100, offset: 0 });
-      setData(response.data.groupDtos.nodes);
-    } catch (error) {
-      notifyError(error);
-    }
+    const response = await getSocialTargets({ socialId: social.id });
+    setData(response.data);
   };
   useEffect(() => {
     fetchData();
@@ -146,7 +142,7 @@ const BaseTable = ({ social }: { social: IRow }) => {
         <ModalGroup
           row={row}
           onHandle={onHandleModal}
-          child={social}
+          parent={social}
           action={action}
           isOpenModalGroup={isOpenModalGroup}
           setIsOpenModalGroup={(value) => setIsOpenModalGroup(value)}

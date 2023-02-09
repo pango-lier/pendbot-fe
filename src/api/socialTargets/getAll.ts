@@ -1,6 +1,6 @@
 import { hookApi } from "api/hookApi";
 
-export const getAll = async (
+export const getSocialTargetAll = async (
 ) => {
   return await hookApi("get", `social-targets/all`);
 };
