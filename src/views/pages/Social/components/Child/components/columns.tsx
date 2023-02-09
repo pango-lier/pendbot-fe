@@ -14,7 +14,7 @@ import Action from "./Action";
 import CheckboxTable from "./CheckboxTable";
 import { ISocialTarget } from "api/socialTargets/type/type.interface";
 
-export interface IRowChild extends ISocialTarget {}
+export interface IRowChild extends ISocialTarget { }
 interface ITable extends IRowChild {
   checkbox?: any;
   expanded?: any;
@@ -56,60 +56,59 @@ export const COLUMNS = (
                 onChange: row.getToggleSelectedHandler(),
               }}
             />
-            {""}
-            {row.getCanExpand() ? (
-              <span
-                {...{
-                  style: { cursor: "pointer" },
-                  onClick: row.getToggleExpandedHandler(),
-                }}
-              >
-                {row.getIsExpanded() ? <ChevronDown /> : <ChevronRight />}
-              </span>
-            ) : (
-              ""
-            )}
           </>
         </div>
       ),
-      size: 15,
+      size: 10,
       minSize: 10,
-      maxSize: 20,
+      maxSize: 15,
     }),
     columnHelper.accessor("id", {
       cell: (info) => info.getValue(),
-      size: 15,
-      minSize: 10,
-      maxSize: 20,
+      size: 5,
+      minSize: 5,
+      maxSize: 10,
     }),
     columnHelper.accessor((row) => row.name, {
       id: "name",
       cell: (info) => <i>{info.getValue()}</i>,
       header: () => <span>Name</span>,
-      size: 70,
-      minSize: 50,
-      maxSize: 100,
+      size: 15,
+      minSize: 15,
+      maxSize: 25,
     }),
     columnHelper.accessor((row) => row.link, {
       id: "link",
       cell: (info) => <i>{info.getValue()}</i>,
       header: () => <span>Name</span>,
-      size: 70,
-      minSize: 50,
-      maxSize: 100,
+      size: 25,
+      minSize: 15,
+      maxSize: 30,
     }),
     columnHelper.accessor((row) => row.targetType, {
       id: "targetType",
       cell: (info) => <i>{info.getValue()}</i>,
       header: () => <span>targetType</span>,
-      size: 70,
-      minSize: 50,
-      maxSize: 100,
+      size: 15,
+      minSize: 15,
+      maxSize: 20,
     }),
-    columnHelper.accessor("createdAt", {
-      size: 70,
-      minSize: 50,
-      maxSize: 100,
+    columnHelper.accessor('createdAt', {
+      header: 'Date',
+      size: 15,
+      minSize: 10,
+      maxSize: 20,
+      cell: (info) => {
+        const date = new Date(info.row.original.createdAt + '');
+        return (
+          <Tooltip
+            id={'createdAt' + info.row.id}
+            fullMessage={info.row.original.createdAt + ''}
+            message={`${date.getMonth() + 1
+              }/${date.getDate()}/${date.getFullYear()}`}
+          />
+        );
+      },
     }),
     columnHelper.accessor("actions", {
       header: ({ table }) => (
@@ -130,9 +129,9 @@ export const COLUMNS = (
           />
         );
       },
-      size: 30,
-      minSize: 30,
-      maxSize: 40,
+      size: 5,
+      minSize: 5,
+      maxSize: 15,
     }),
   ];
 };

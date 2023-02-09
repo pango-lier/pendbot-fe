@@ -122,20 +122,19 @@ export const COLUMNS = (
       minSize: 50,
       maxSize: 150,
     }),
-    columnHelper.accessor("createdAt", {
-      header: "Date",
+    columnHelper.accessor('createdAt', {
+      header: 'Date',
       size: 7,
       minSize: 40,
       maxSize: 100,
       cell: (info) => {
-        const date = new Date(info.row.original.createdAt + "");
+        const date = new Date(info.row.original.createdAt + '');
         return (
           <Tooltip
-            id={"da" + info.row.id}
-            fullMessage={info.row.original.createdAt + ""}
-            message={`${
-              date.getMonth() + 1
-            }/${date.getDate()}/${date.getFullYear()}`}
+            id={'createdAt' + info.row.id}
+            fullMessage={info.row.original.createdAt + ''}
+            message={`${date.getMonth() + 1
+              }/${date.getDate()}/${date.getFullYear()}`}
           />
         );
       },

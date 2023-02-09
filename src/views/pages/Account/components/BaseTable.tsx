@@ -108,7 +108,10 @@ const BaseTable = () => {
                     {...{
                       key: header.id,
                       style: {
-                        width: header.column.columnDef.size,
+                        width:
+                          header.column.columnDef.size !== 0
+                            ? `${header.column.columnDef.size}%`
+                            : 'auto',
                         maxWidth: header.column.columnDef.maxSize,
                         minWidth: header.column.columnDef.minSize,
                       },
@@ -117,9 +120,9 @@ const BaseTable = () => {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </th>
                 ))}
               </tr>
@@ -134,7 +137,10 @@ const BaseTable = () => {
                       {...{
                         key: cell.id,
                         style: {
-                          width: cell.column.columnDef.size,
+                          width:
+                            cell.column.columnDef.size !== 0
+                              ? `${cell.column.columnDef.size}%`
+                              : 'auto',
                           maxWidth: cell.column.columnDef.maxSize,
                           minWidth: cell.column.columnDef.minSize,
                         },

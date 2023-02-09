@@ -88,54 +88,65 @@ export const COLUMNS = (
       ),
       size: 15,
       minSize: 10,
-      maxSize: 15,
+      maxSize: 25,
     }),
     columnHelper.accessor("id", {
       cell: (info) => info.getValue(),
-      size: 15,
-      minSize: 10,
-      maxSize: 20,
+      size: 5,
+      minSize: 5,
+      maxSize: 10,
     }),
     columnHelper.accessor((row) => row.name, {
       id: "name",
       cell: (info) => <i>{info.getValue()}</i>,
       header: () => <span>Name</span>,
-      size: 50,
-      minSize: 20,
-      maxSize: 50,
+      size: 15,
+      minSize: 15,
+      maxSize: 25,
     }),
     columnHelper.accessor("username", {
       header: () => "username",
       cell: (info) => (
         <Tooltip id={"c" + info.row.id} message={info.getValue() ?? ""} />
       ),
-      size: 20,
-      minSize: 20,
-      maxSize: 50,
+      size: 15,
+      minSize: 15,
+      maxSize: 25,
     }),
     columnHelper.accessor('socialType', {
       header: () => <span>Type</span>,
       size: 15,
-      minSize: 50,
-      maxSize: 150,
+      minSize: 15,
+      maxSize: 25,
     }),
     columnHelper.accessor("email", {
       header: () => <span>Email</span>,
-      size: 50,
-      minSize: 50,
-      maxSize: 50,
+      size: 15,
+      minSize: 15,
+      maxSize: 25,
     }),
     columnHelper.accessor("active", {
       header: "active",
-      size: 15,
-      minSize: 20,
-      maxSize: 30,
+      size: 7,
+      minSize: 7,
+      maxSize: 12,
     }),
-    columnHelper.accessor("createdAt", {
-      header: "Date",
-      size: 50,
-      minSize: 50,
-      maxSize: 50,
+    columnHelper.accessor('createdAt', {
+      header: 'Date',
+      size: 10,
+      minSize: 10,
+      maxSize: 20,
+      cell: (info) => {
+        const date = new Date(info.row.original.createdAt + '');
+        return (
+          <Tooltip
+            id={'createdAt' + info.row.id}
+            fullMessage={info.row.original.createdAt + ''}
+            message={`${date.getMonth() + 1
+              }/${date.getDate()}/${date.getFullYear()}`}
+          />
+        );
+      },
     }),
     columnHelper.accessor("actions", {
       header: ({ table }) => (
@@ -156,8 +167,8 @@ export const COLUMNS = (
           />
         );
       },
-      size: 30,
-      minSize: 30,
-      maxSize: 40,
+      size: 5,
+      minSize: 5,
+      maxSize: 10,
     }),
   ];

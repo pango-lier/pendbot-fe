@@ -89,10 +89,14 @@ const BaseTable = ({ social }: { social: IRow }) => {
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <th
+                    className="rt-th"
                     {...{
                       key: header.id,
                       style: {
-                        width: header.column.columnDef.size,
+                        width:
+                          header.column.columnDef.size !== 0
+                            ? `${header.column.columnDef.size}%`
+                            : 'auto',
                         maxWidth: header.column.columnDef.maxSize,
                         minWidth: header.column.columnDef.minSize,
                       },
@@ -101,9 +105,9 @@ const BaseTable = ({ social }: { social: IRow }) => {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </th>
                 ))}
               </tr>
@@ -116,10 +120,14 @@ const BaseTable = ({ social }: { social: IRow }) => {
                   {row.getVisibleCells().map((cell) => {
                     return (
                       <td
+                        className="rt-td"
                         {...{
                           key: cell.id,
                           style: {
-                            width: cell.column.columnDef.size,
+                            width:
+                              cell.column.columnDef.size !== 0
+                                ? `${cell.column.columnDef.size}%`
+                                : 'auto',
                             maxWidth: cell.column.columnDef.maxSize,
                             minWidth: cell.column.columnDef.minSize,
                           },

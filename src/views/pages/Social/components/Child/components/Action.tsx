@@ -11,7 +11,7 @@ const Action = ({ row, onEditHandle, onDeleteHandle }: any) => {
   return (
     <>
       <div className="d-flex justify-content-around align-content-between flex-nowrap">
-        <ButtonTooltip
+        {/* <ButtonTooltip
           color="primary"
           id={"create-account" + row.id}
           message={"Create new account"}
@@ -24,7 +24,7 @@ const Action = ({ row, onEditHandle, onDeleteHandle }: any) => {
           onHandle={() => onDeleteHandle(row)}
           icon={<Trash2 size={12}  />}
           color="danger"
-        />
+        /> */}
         <UncontrolledDropdown>
           <DropdownToggle
             className="icon-btn hide-arrow"
@@ -35,11 +35,11 @@ const Action = ({ row, onEditHandle, onDeleteHandle }: any) => {
             <MoreVertical size={15} />
           </DropdownToggle>
           <DropdownMenu container={"body"}>
-            <DropdownItem href="/" onClick={(e) => onEditHandle(row)}>
+            <DropdownItem onClick={(e) => onEditHandle(row)}>
               <Edit className="me-50" size={15} />{" "}
               <span className="align-middle">Edit</span>
             </DropdownItem>
-            <DropdownItem href="/" onClick={(e) => onDeleteHandle(row)}>
+            <DropdownItem onClick={(e) => onDeleteHandle(row)}>
               <Trash className="me-50" size={15} />{" "}
               <span className="align-middle">Delete</span>
             </DropdownItem>

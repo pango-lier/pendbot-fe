@@ -133,7 +133,7 @@ const BaseTable = () => {
                           width:
                             header.column.columnDef.size !== 0
                               ? `${header.column.columnDef.size}%`
-                              : "auto",
+                              : 'auto',
                           maxWidth: header.column.columnDef.maxSize,
                           minWidth: header.column.columnDef.minSize,
                         },
