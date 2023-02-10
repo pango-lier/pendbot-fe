@@ -105,7 +105,7 @@ const ModalGroup = ({
           if (!row?.id) return;
           const destroy = await deleteSocialTarget(row?.id);
           setIsOpenModalGroup(!isOpenModalGroup);
-          onHandle(destroy.data);
+          onHandle({ id: row?.id });
 
           break;
         default:
@@ -128,19 +128,6 @@ const ModalGroup = ({
         <ModalBody>
           <Form className="auth-register-form mt-2" style={styleAction}>
             <div className="mb-1">
-              <Label className="form-label" for="setIsOpenModalGroup-name">
-                Name
-              </Label>
-              <Input
-                defaultValue={data?.name}
-                type="text"
-                id="setIsOpenModalGroup-name"
-                placeholder="johndoe"
-                autoFocus
-                onChange={(e) => onChangeName(e, "name")}
-              />
-            </div>
-            <div className="mb-1">
               <Label className="form-label" for="register-type">
                 Crawler Link Type
               </Label>
@@ -151,6 +138,19 @@ const ModalGroup = ({
                 options={enumToFormatSelectOptions(SocialTargetEnum)}
                 onChange={(e) => onChangeType(e)}
                 isClearable={true}
+              />
+            </div>
+            <div className="mb-1">
+              <Label className="form-label" for="setIsOpenModalGroup-name">
+                Name
+              </Label>
+              <Input
+                defaultValue={data?.name}
+                type="text"
+                id="setIsOpenModalGroup-name"
+                placeholder="johndoe"
+                autoFocus
+                onChange={(e) => onChangeName(e, "name")}
               />
             </div>
             <div className="mb-1">

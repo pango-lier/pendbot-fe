@@ -86,23 +86,23 @@ export const COLUMNS = (
           </>
         </div>
       ),
-      size: 15,
-      minSize: 10,
-      maxSize: 20,
+      size: 7,
+      minSize: 5,
+      maxSize: 15,
     }),
     columnHelper.accessor("id", {
       cell: (info) => info.getValue(),
-      size: 15,
-      minSize: 10,
-      maxSize: 20,
+      size: 5,
+      minSize: 5,
+      maxSize: 15,
     }),
     columnHelper.accessor((row) => row.name, {
       id: "name",
       cell: (info) => <i>{info.getValue()}</i>,
       header: () => <span>Name</span>,
-      size: 70,
-      minSize: 50,
-      maxSize: 100,
+      size: 20,
+      minSize: 15,
+      maxSize: 25,
     }),
     columnHelper.accessor("group.name", {
       header: () => "Group",
@@ -112,36 +112,36 @@ export const COLUMNS = (
           message={info.row.original.group?.name ?? ""}
         />
       ),
-      size: 70,
-      minSize: 50,
-      maxSize: 100,
+      size: 12,
+      minSize: 10,
+      maxSize: 20,
     }),
     columnHelper.accessor("proxyId", {
       header: () => "Proxy Id",
       cell: (info) => (
         <Tooltip id={"c" + info.row.id} message={info.getValue() ?? ""} />
       ),
-      size: 70,
-      minSize: 50,
-      maxSize: 100,
+      size: 12,
+      minSize: 10,
+      maxSize: 22,
     }),
     columnHelper.accessor("proxyType", {
       header: () => <span>Proxy Type</span>,
-      size: 70,
-      minSize: 50,
-      maxSize: 100,
+      size: 10,
+      minSize: 8,
+      maxSize: 15,
     }),
     columnHelper.accessor("active", {
       header: () => <span>Active</span>,
-      size: 30,
-      minSize: 20,
-      maxSize: 30,
+      size: 8,
+      minSize: 5,
+      maxSize: 15,
     }),
     columnHelper.accessor("createdAt", {
       header: "Date",
-      size: 50,
-      minSize: 40,
-      maxSize: 70,
+      size: 10,
+      minSize: 10,
+      maxSize: 15,
       cell: (info) => {
         const date = new Date(info.row.original.createdAt);
         return (
@@ -174,9 +174,9 @@ export const COLUMNS = (
           />
         );
       },
-      size: 30,
-      minSize: 30,
-      maxSize: 40,
+      size: 10,
+      minSize: 10,
+      maxSize: 20,
     }),
   ];
 };

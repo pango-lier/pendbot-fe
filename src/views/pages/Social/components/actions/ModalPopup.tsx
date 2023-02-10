@@ -47,7 +47,7 @@ const ModalUser = ({
     if (row) {
       setData(row);
       setType(row?.socialType || SocialEnum.NONE);
-      console.log(SocialEnum, row?.socialType,enumToFormatSelected(SocialEnum, row?.socialType));
+      console.log(SocialEnum, row?.socialType, enumToFormatSelected(SocialEnum, row?.socialType));
     }
   }, []);
 
@@ -83,7 +83,10 @@ const ModalUser = ({
         case ACTION_ENUM.Edit:
           if (!row?.id) return;
           if (!data) return;
-          const update = await updateSocial(row?.id, data);
+          const update = await updateSocial(row?.id, {
+            ...data,
+            userId: +(row?.userId || 0)
+          });
           setIsOpenModalGroup(!isOpenModalGroup);
           onHandle(update.data);
 

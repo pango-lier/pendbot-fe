@@ -80,7 +80,7 @@ export const COLUMNS = (
     columnHelper.accessor((row) => row.link, {
       id: "link",
       cell: (info) => <i>{info.getValue()}</i>,
-      header: () => <span>Name</span>,
+      header: () => <span>Link</span>,
       size: 25,
       minSize: 15,
       maxSize: 30,

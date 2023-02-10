@@ -20,7 +20,7 @@ export interface ICrawlerLink {
 
   socials?: ISocial[];
 
-  socialIds?: number[];
+  socialTargetIds?: number[];
 
   accountId?: number | string;
 

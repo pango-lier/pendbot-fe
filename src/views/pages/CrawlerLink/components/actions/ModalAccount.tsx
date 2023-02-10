@@ -24,11 +24,11 @@ import {
 import { ISocial } from "api/socials/type/socials.interface";
 import { getAll } from "api/socials/getAll";
 import { notifyError } from "utility/notify";
+import { findAllRawSocialTarget } from "../../../../../api/socialTargets/findAllRaw";
 
-interface IGroupSelect {
+interface IOptions {
   value: number;
   label: string;
-  id: number;
 }
 
 interface IModalIAccountProps<T> {
@@ -50,7 +50,7 @@ const ModalAccount = ({
   >();
   const [type, setType] = useState<CrawlerLinkEnum>();
   const [data, setData] = useState<ICrawlerLink>();
-  const [socials, setSocials] = useState<ISocial[]>([]);
+  const [socials, setSocials] = useState<IOptions[]>([]);
   const [socialSelected, setSocialSelected] = useState<any>();
   useEffect(() => {
     fetchSocialOptions();
@@ -61,27 +61,27 @@ const ModalAccount = ({
     }
   }, []);
   const fetchSocialOptions = async () => {
-    const res = await getAll();
+    const res = await findAllRawSocialTarget();
     const options = res.data.map((i) => {
       return {
         value: i.id,
-        label: i.username
-      }
-    })
+        label: i.name,
+      };
+    });
     setSocials(options);
     if (row?.socials) {
       const options = row.socials.map((i) => {
         return {
           value: i.id,
-          label: i.username
-        }
-      })
-      socialSelected(options)
+          label: i.name,
+        };
+      });
+      setSocialSelected(options);
     }
-  }
+  };
   const onSocial = (e) => {
     setSocialSelected(e);
-  }
+  };
   useEffect(() => {
     if (action === ACTION_ENUM.Delete)
       setStyleAction({ pointerEvents: "none", opacity: "0.7" });
@@ -113,7 +113,7 @@ const ModalAccount = ({
           description: data.description,
           type: data.type,
           target: data.target,
-          socialIds: socialSelected.map((i) => i.value),
+          socialTargetIds: socialSelected.map((i) => i.value),
           accountId: data.accountId,
         });
         setIsOpenModalGroup(!isOpenModalGroup);
@@ -130,7 +130,7 @@ const ModalAccount = ({
             description: data.description,
             type: data.type,
             target: data.target,
-            socialIds: socialSelected.map((i) => i.value),
+            socialTargetIds: socialSelected.map((i) => i.value),
             accountId: data.accountId,
           });
           setIsOpenModalGroup(!isOpenModalGroup);
