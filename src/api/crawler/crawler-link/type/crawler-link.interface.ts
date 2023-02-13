@@ -11,8 +11,6 @@ export interface ICrawlerLink {
 
   name?: string;
 
-  description?: string;
-
   status?: string;
 
   type?: CrawlerLinkEnum;
@@ -32,7 +30,10 @@ export interface ICrawlerLink {
 
 
 export class RunCrawlerQueueDto {
-  ids?: Array<string | number>;
-  commands?: string;
-  options?: any;
+  commands?: CrawlerLinkEnum;
+  crawler?: {
+    type: CrawlerLinkEnum,
+    target: string,
+    [key: string]: string | number,
+  }
 }

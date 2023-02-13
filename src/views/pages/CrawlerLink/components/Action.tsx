@@ -12,7 +12,13 @@ import { ButtonTooltip } from "views/pages/components/ButtonTooltip";
 
 const Action = ({ row, onEditHandle, onDeleteHandle }: any) => {
   const onRunCommandService = async () => {
-    await await runQueueService({ ids: [row.id], commands: "normal", options: null });
+    await await runQueueService({
+      commands: row.type,
+      crawler: {
+        type: row.type,
+        target: row.target
+      }
+    });
   };
 
   return (
