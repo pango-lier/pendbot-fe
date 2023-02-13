@@ -1,5 +1,4 @@
 import { runCrawler } from "api/crawler/crawler/actions/runCrawler";
-import { runTestFacebookService } from "api/puppeteers/facebook/create";
 import { Edit, MoreVertical, Navigation, Trash } from "react-feather";
 import {
   DropdownItem,
@@ -12,9 +11,6 @@ import { ButtonTooltip } from "views/pages/components/ButtonTooltip";
 const Action = ({ row, onEditHandle, onDeleteHandle }: any) => {
   const runCrawlerHandle = async () => {
     await runCrawler({ id: [row.id] });
-  };
-  const onRunTestFacebookService = async () => {
-    await await runTestFacebookService(row);
   };
 
   return (
@@ -37,7 +33,7 @@ const Action = ({ row, onEditHandle, onDeleteHandle }: any) => {
             <MoreVertical size={15} />
           </DropdownToggle>
           <DropdownMenu container={"body"}>
-            <DropdownItem href="#" onClick={() => onRunTestFacebookService()}>
+            <DropdownItem href="#" onClick={() => runCrawlerHandle()}>
               <Edit className="me-50" size={15} />{" "}
               <span className="align-middle">Run Test </span>
             </DropdownItem>
