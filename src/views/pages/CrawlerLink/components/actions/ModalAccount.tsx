@@ -48,7 +48,7 @@ const ModalAccount = ({
   const [styleAction, setStyleAction] = useState<
     React.CSSProperties | undefined
   >();
-  const [type, setType] = useState<CrawlerLinkEnum>(CrawlerLinkEnum.YoutubeVideoDirect);
+  const [type, setType] = useState<CrawlerLinkEnum>(CrawlerLinkEnum.Normal);
   const [data, setData] = useState<ICrawlerLink>();
   const [socials, setSocials] = useState<IOptions[]>([]);
   const [socialSelected, setSocialSelected] = useState<any>();
@@ -57,7 +57,7 @@ const ModalAccount = ({
 
     if (row) {
       setData(row);
-      setType(row?.type || CrawlerLinkEnum.YoutubeVideoDirect);
+      setType(row?.type || CrawlerLinkEnum.Normal);
     }
   }, []);
   const fetchSocialOptions = async () => {

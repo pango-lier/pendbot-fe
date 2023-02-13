@@ -1,7 +1,7 @@
 export enum CrawlerLinkEnum {
   None = 'None',
-  YoutubeShort = 'YoutubeShort',
-  YoutubeVideoDirect = 'YoutubeVideoDirect',
+  Auto = 'Auto',
+  Normal = 'Normal',
 }
 
 export enum CrawlerLinkStatusEnum {
