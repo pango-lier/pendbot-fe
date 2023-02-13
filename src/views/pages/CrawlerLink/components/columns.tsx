@@ -63,15 +63,15 @@ export const COLUMNS = (
           </>
         </div>
       ),
-      size: 5,
-      minSize: 40,
-      maxSize: 100,
+      size: 10,
+      minSize: 10,
+      maxSize: 20,
     }),
     columnHelper.accessor("id", {
       cell: (info) => info.getValue(),
       size: 5,
-      minSize: 20,
-      maxSize: 70,
+      minSize: 5,
+      maxSize: 10,
     }),
     columnHelper.accessor("name", {
       header: () => "Name",
@@ -81,31 +81,21 @@ export const COLUMNS = (
           message={info.row.original?.name ?? ""}
         />
       ),
-      size: 0,
-      minSize: 50,
-      maxSize: 200,
+      size: 5,
+      minSize: 5,
+      maxSize: 15,
     }),
-    columnHelper.accessor("description", {
-      header: () => "Description",
-      cell: (info) => (
-        <Tooltip id={"c" + info.row.id} message={info.getValue() ?? ""} />
-      ),
-      size: 0,
-      minSize: 50,
-      maxSize: 200,
-    }),
-
     columnHelper.accessor("type", {
       header: () => <span>Type</span>,
       size: 15,
-      minSize: 50,
-      maxSize: 150,
+      minSize: 10,
+      maxSize: 20,
     }),
     columnHelper.accessor("status", {
       header: () => <span>Status</span>,
-      size: 5,
-      minSize: 50,
-      maxSize: 150,
+      size: 10,
+      minSize: 10,
+      maxSize: 20,
       meta: {
         sand: 2,
       },
@@ -118,15 +108,15 @@ export const COLUMNS = (
           message={info.row.original?.target ?? ""}
         />
       ),
-      size: 15,
-      minSize: 50,
-      maxSize: 150,
+      size: 25,
+      minSize: 20,
+      maxSize: 50,
     }),
     columnHelper.accessor('createdAt', {
       header: 'Date',
-      size: 7,
-      minSize: 40,
-      maxSize: 100,
+      size: 15,
+      minSize: 10,
+      maxSize: 20,
       cell: (info) => {
         const date = new Date(info.row.original.createdAt + '');
         return (
@@ -158,9 +148,9 @@ export const COLUMNS = (
           />
         );
       },
-      size: 15,
-      minSize: 50,
-      maxSize: 150,
+      size: 5,
+      minSize: 5,
+      maxSize: 15,
     }),
   ];
 };

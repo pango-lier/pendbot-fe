@@ -1,4 +1,5 @@
 import { ISocial } from "api/socials/type/socials.interface";
+import { ISocialTarget } from "api/socialTargets/type/type.interface";
 import { CrawlerLinkEnum } from "../enum/crawler-link.enum";
 
 export interface ICrawlerLink {
@@ -18,7 +19,7 @@ export interface ICrawlerLink {
 
   target?: string;
 
-  socials?: ISocial[];
+  socialTargets?: ISocialTarget[];
 
   socialTargetIds?: number[];
 
