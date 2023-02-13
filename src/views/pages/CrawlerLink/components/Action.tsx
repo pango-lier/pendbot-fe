@@ -1,4 +1,4 @@
-import { runCrawler } from "api/crawler/crawler/actions/runCrawler";
+
 import { runQueueService } from "api/crawler/run-queues";
 
 import { Edit, MoreVertical, Navigation, Trash } from "react-feather";
@@ -11,9 +11,6 @@ import {
 import { ButtonTooltip } from "views/pages/components/ButtonTooltip";
 
 const Action = ({ row, onEditHandle, onDeleteHandle }: any) => {
-  const runCrawlerHandle = async () => {
-    await runCrawler({ id: [row.id] });
-  };
   const onRunCommandService = async () => {
     await await runQueueService({ ids: [row.id], commands: "normal", options: null });
   };
