@@ -1,4 +1,6 @@
 import { runCrawler } from "api/crawler/crawler/actions/runCrawler";
+import { runQueueService } from "api/crawler/run-queues";
+
 import { Edit, MoreVertical, Navigation, Trash } from "react-feather";
 import {
   DropdownItem,
@@ -12,6 +14,9 @@ const Action = ({ row, onEditHandle, onDeleteHandle }: any) => {
   const runCrawlerHandle = async () => {
     await runCrawler({ id: [row.id] });
   };
+  const onRunCommandService = async () => {
+    await await runQueueService({ ids: [row.id], commands: "normal", options: null });
+  };
 
   return (
     <>
@@ -19,7 +24,7 @@ const Action = ({ row, onEditHandle, onDeleteHandle }: any) => {
         <ButtonTooltip
           message="Run crawler"
           id={`run-crawler-${row.id}`}
-          onHandle={() => runCrawlerHandle()}
+          onHandle={() => onRunCommandService()}
           icon={<Navigation size={12} />}
           color="primary"
         ></ButtonTooltip>
@@ -33,7 +38,7 @@ const Action = ({ row, onEditHandle, onDeleteHandle }: any) => {
             <MoreVertical size={15} />
           </DropdownToggle>
           <DropdownMenu container={"body"}>
-            <DropdownItem href="#" onClick={() => runCrawlerHandle()}>
+            <DropdownItem href="#" onClick={() => onRunCommandService()}>
               <Edit className="me-50" size={15} />{" "}
               <span className="align-middle">Run Test </span>
             </DropdownItem>

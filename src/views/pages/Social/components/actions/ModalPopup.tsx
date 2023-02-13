@@ -97,7 +97,7 @@ const ModalUser = ({
             row?.id,
           );
           setIsOpenModalGroup(!isOpenModalGroup);
-          onHandle(destroy.data);
+          onHandle(row);
 
           break;
         default:

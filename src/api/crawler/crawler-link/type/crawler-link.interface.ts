@@ -28,3 +28,10 @@ export interface ICrawlerLink {
 
   crawlerConfigs?: Array<any>;
 }
+
+
+export class RunCrawlerQueueDto {
+  ids?: Array<string | number>;
+  commands?: string;
+  options?: any;
+}
