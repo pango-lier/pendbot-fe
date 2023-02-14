@@ -110,7 +110,6 @@ const ModalAccount = ({
         }
         const account = await createCrawlerLink({
           name: data?.name,
-          description: data.description,
           type: data.type,
           target: data.target,
           socialTargetIds: socialSelected.map((i) => i.value),
@@ -127,7 +126,6 @@ const ModalAccount = ({
         if (row?.id) {
           const update = await updateCrawlerLink(+row?.id, {
             name: data?.name,
-            description: data.description,
             type: data.type,
             target: data.target,
             socialTargetIds: socialSelected.map((i) => i.value),

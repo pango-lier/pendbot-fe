@@ -2,13 +2,7 @@ import { ISocial } from "api/socials/type/socials.interface";
 import { ISocialTarget } from "api/socialTargets/type/type.interface";
 import { CrawlerLinkEnum } from "../enum/crawler-link.enum";
 
-export interface ICrawlerLink {
-  checkbox?: any;
-  expanded?: any;
-  actions?: any;
-
-  id?: string | number;
-
+export interface ICrawlerLinkDto {
   name?: string;
 
   status?: string;
@@ -27,13 +21,16 @@ export interface ICrawlerLink {
 
   crawlerConfigs?: Array<any>;
 }
+export interface ICrawlerLink extends ICrawlerLinkDto {
+  checkbox?: any;
+  expanded?: any;
+  actions?: any;
 
+  id?: string | number;
+}
 
 export class RunCrawlerQueueDto {
-  commands?: CrawlerLinkEnum;
-  crawler?: {
-    type: CrawlerLinkEnum,
-    target: string,
-    [key: string]: string | number,
-  }
+  crawlerLinks?: ICrawlerLinkDto[];
+  commands?: "crawlerYoutubeNormal" | "crawlerYoutubeAuto";
+  crawlerLinkIds?: number[];
 }

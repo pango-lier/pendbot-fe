@@ -9,15 +9,15 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 import { ButtonTooltip } from "views/pages/components/ButtonTooltip";
+import { CrawlerLinkEnum } from "../../../../api/crawler/crawler/enum/crawler-link.enum";
 
 const Action = ({ row, onEditHandle, onDeleteHandle }: any) => {
   const onRunCommandService = async () => {
+    let commands: any = 'crawlerYoutubeNormal';
+    if (row.type === CrawlerLinkEnum.Auto) commands = 'crawlerYoutubeAuto';
     await await runQueueService({
-      commands: row.type,
-      crawler: {
-        type: row.type,
-        target: row.target
-      }
+      commands,
+      crawlerLinkIds: [row.id]
     });
   };
 
