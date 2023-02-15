@@ -18,8 +18,8 @@ const Routes = [
     component: lazy(() => import('../../views/pages/User'))
   },
   {
-    path: '/accounts',
-    component: lazy(() => import('../../views/pages/Account'))
+    path: '/proxies',
+    component: lazy(() => import('../../views/pages/Proxy'))
   },
   {
     path: '/about-us',

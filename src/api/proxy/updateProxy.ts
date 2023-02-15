@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export interface IUpdateAccount {
+export interface IUpdateProxy {
   name: string;
 
   active?: boolean;
@@ -14,9 +14,9 @@ export interface IUpdateAccount {
   userId?: number;
 }
 
-export const updateAccount = async (id: number, params: IUpdateAccount) => {
+export const updateProxy = async (id: number, params: IUpdateProxy) => {
   return await axios.patch(
-    `${process.env.REACT_APP_SERVER_URL}/accounts/${id}`,
+    `${process.env.REACT_APP_SERVER_URL}/proxies/${id}`,
     params
   );
 };

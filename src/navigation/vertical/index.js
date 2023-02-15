@@ -26,10 +26,10 @@ export default [
     navLink: '/users'
   },
   {
-    id: 'accounts',
-    title: 'Account',
+    id: 'proxies',
+    title: 'Proxy',
     icon: <Activity size={20} />,
-    navLink: '/accounts'
+    navLink: '/proxies'
   },
   {
     id: 'socials',

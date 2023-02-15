@@ -13,14 +13,14 @@ const Action = ({ row, onEditHandle, onDeleteHandle }: any) => {
       <div className="d-flex justify-content-around align-content-between flex-nowrap">
         {/* <ButtonTooltip
           color="primary"
-          id={"create-account" + row.id}
-          message={"Create new account"}
+          id={"create-proxy" + row.id}
+          message={"Create new proxy"}
           onHandle={() => onEditHandle(row)}
           icon={<Edit2 size={12} />}
         />
         <ButtonTooltip
-          id={"create-account" + row.id}
-          message={"Create new account"}
+          id={"create-proxy" + row.id}
+          message={"Create new proxy"}
           onHandle={() => onDeleteHandle(row)}
           icon={<Trash2 size={12}  />}
           color="danger"

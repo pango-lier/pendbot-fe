@@ -8,7 +8,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { notifyError } from "utility/notify";
-import Account from "./Account";
+import Proxy from "./Proxy";
 import { UserI } from "../../columns";
 import { Table } from "reactstrap";
 import ModalGroup from "./actions/ModalGroup";
@@ -142,7 +142,7 @@ const BaseTable = ({ user }: { user: UserI }) => {
                   <tr>
                     {/* 2nd row is a custom 1 cell row */}
                     <td colSpan={row.getVisibleCells().length}>
-                      <Account group={row.original} user={user} />
+                      <Proxy group={row.original} user={user} />
                     </td>
                   </tr>
                 )}

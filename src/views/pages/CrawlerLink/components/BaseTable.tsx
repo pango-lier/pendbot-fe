@@ -11,7 +11,7 @@ import { Card, CardBody, CardHeader, Input, Table } from "reactstrap";
 import IconTextPagination from "./PaginationIconText";
 import { ACTION_ENUM } from "utility/enum/actions";
 
-import ModalAccount from "./actions/ModalAccount";
+import ModalProxy from "./actions/ModalProxy";
 import { ICrawlerLink } from "api/crawler/crawler-link/type/crawler-link.interface";
 import { getCrawlerLink } from "api/crawler/crawler-link/gets";
 import { Search } from "react-feather";
@@ -205,7 +205,7 @@ const BaseTable = () => {
           </div>
         </CardBody>
         {isOpenModalGroup && (
-          <ModalAccount
+          <ModalProxy
             row={row}
             onHandleModal={onHandleModal}
             action={action}

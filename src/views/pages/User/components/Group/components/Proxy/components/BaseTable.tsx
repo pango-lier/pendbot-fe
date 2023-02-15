@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { COLUMNS, IAccount } from "./columns";
+import { COLUMNS, IProxy } from "./columns";
 import {
   ExpandedState,
   flexRender,
@@ -9,16 +9,16 @@ import {
 } from "@tanstack/react-table";
 import { notifyError } from "utility/notify";
 import { IUserGroupProps } from "../../columns";
-import ModalAccount from "../actions/ModalAccount";
+import ModalProxy from "../actions/ModalProxy";
 import { Table } from "reactstrap";
 import { ACTION_ENUM } from "utility/enum/actions";
-import { getAccounts } from "api/account/getAccounts";
+import { getProxies } from "api/proxy/getProxies";
 
 const BaseTable = ({ user, group }: IUserGroupProps) => {
   const [isOpenModalGroup, setIsOpenModalGroup] = useState<boolean>(false);
   const [action, setAction] = useState<ACTION_ENUM>(ACTION_ENUM.None);
-  const [row, setRow] = useState<IAccount | undefined>();
-  const [data, setData] = useState<IAccount[]>([]);
+  const [row, setRow] = useState<IProxy | undefined>();
+  const [data, setData] = useState<IProxy[]>([]);
   const onCreateHandle = () => {
     setAction(ACTION_ENUM.Create);
     setRow(undefined);
@@ -60,7 +60,7 @@ const BaseTable = ({ user, group }: IUserGroupProps) => {
 
   const fetchData = async () => {
     try {
-      const response = await getAccounts({ limit: 100, offset: 0 });
+      const response = await getProxies({ limit: 100, offset: 0 });
       setData(response.data.accountDtos.nodes);
     } catch (error) {
       notifyError(error);
@@ -105,9 +105,9 @@ const BaseTable = ({ user, group }: IUserGroupProps) => {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </th>
                 ))}
               </tr>
@@ -136,7 +136,7 @@ const BaseTable = ({ user, group }: IUserGroupProps) => {
         </Table>
       </div>
       {isOpenModalGroup && (
-        <ModalAccount
+        <ModalProxy
           action={action}
           row={row}
           group={group}

@@ -15,7 +15,7 @@ export interface IGroup {
   userId?: string;
   createdAt: Date;
 }
-export interface IAccount {
+export interface IProxy {
   checkbox?: any;
   expanded?: any;
   id: string | number;
@@ -29,7 +29,7 @@ export interface IAccount {
   actions?: any;
 }
 
-const columnHelper = createColumnHelper<IAccount>();
+const columnHelper = createColumnHelper<IProxy>();
 
 export const COLUMNS = (
   onCreateHandle: Function,

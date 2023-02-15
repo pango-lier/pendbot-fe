@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useMemo, useState } from "react";
-import { COLUMNS, IAccount } from "./columns";
+import { COLUMNS, IProxy } from "./columns";
 import {
   ExpandedState,
   flexRender,
@@ -12,14 +12,14 @@ import IconTextPagination from "./PaginationIconText";
 import { notifyError } from "utility/notify";
 import { ACTION_ENUM } from "utility/enum/actions";
 
-import { getAccounts } from "api/account/getAccounts";
-import ModalAccount from "./actions/ModalAccount";
+import { getProxies } from "api/proxy/getProxies";
+import ModalProxy from "./actions/ModalProxy";
 import { Search } from "react-feather";
 
 const BaseTable = () => {
   const [isOpenModalGroup, setIsOpenModalGroup] = useState<boolean>(false);
-  const [row, setRow] = useState<IAccount | undefined>();
-  const [data, setData] = useState<IAccount[]>([]);
+  const [row, setRow] = useState<IProxy | undefined>();
+  const [data, setData] = useState<IProxy[]>([]);
   const [expanded, setExpanded] = React.useState<ExpandedState>({});
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [perPage, setPerPage] = useState<number>(10);
@@ -70,7 +70,7 @@ const BaseTable = () => {
   };
 
   const fetchData = async ({ limit, offset }) => {
-    const response = await getAccounts({
+    const response = await getProxies({
       limit,
       offset,
     });
@@ -205,7 +205,7 @@ const BaseTable = () => {
           </div>
         </CardBody>
         {isOpenModalGroup && (
-          <ModalAccount
+          <ModalProxy
             row={row}
             onHandleModal={onHandleModal}
             action={action}

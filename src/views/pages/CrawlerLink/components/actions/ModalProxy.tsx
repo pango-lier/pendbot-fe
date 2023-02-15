@@ -31,20 +31,20 @@ interface IOptions {
   label: string;
 }
 
-interface IModalIAccountProps<T> {
+interface IModalIProxyProps<T> {
   row: T | undefined;
   isOpenModalGroup: boolean;
   setIsOpenModalGroup: Function;
   onHandleModal: Function;
   action: ACTION_ENUM;
 }
-const ModalAccount = ({
+const ModalProxy = ({
   isOpenModalGroup,
   setIsOpenModalGroup,
   row,
   onHandleModal,
   action,
-}: IModalIAccountProps<ICrawlerLink>) => {
+}: IModalIProxyProps<ICrawlerLink>) => {
   const [styleAction, setStyleAction] = useState<
     React.CSSProperties | undefined
   >();
@@ -108,7 +108,7 @@ const ModalAccount = ({
           notifyError("Target is required !");
           return;
         }
-        const account = await createCrawlerLink({
+        const proxy = await createCrawlerLink({
           name: data?.name,
           type: data.type,
           target: data.target,
@@ -116,7 +116,7 @@ const ModalAccount = ({
           accountId: data.accountId,
         });
         setIsOpenModalGroup(!isOpenModalGroup);
-        onHandleModal(account.data);
+        onHandleModal(proxy.data);
         break;
       case ACTION_ENUM.Edit:
         if (!data?.target) {
@@ -212,4 +212,4 @@ const ModalAccount = ({
 
 //ModalGroup.propTypes = {};
 
-export default ModalAccount;
+export default ModalProxy;

@@ -22,20 +22,20 @@ import { updateCrawler } from "api/crawler/crawler/update";
 import { deleteCrawler } from "api/crawler/crawler/delete";
 
 
-interface IModalIAccountProps<T> {
+interface IModalIProxyProps<T> {
   row: T | undefined;
   isOpenModalGroup: boolean;
   setIsOpenModalGroup: Function;
   onHandleModal: Function;
   action: ACTION_ENUM;
 }
-const ModalAccount = ({
+const ModalProxy = ({
   isOpenModalGroup,
   setIsOpenModalGroup,
   row,
   onHandleModal,
   action,
-}: IModalIAccountProps<ICrawler>) => {
+}: IModalIProxyProps<ICrawler>) => {
   const [styleAction, setStyleAction] = useState<
     React.CSSProperties | undefined
   >();
@@ -65,14 +65,14 @@ const ModalAccount = ({
     switch (action) {
       case ACTION_ENUM.Create:
         if (!data?.name) return;
-        const account = await createCrawler({
+        const proxy = await createCrawler({
           name: data?.name,
           description: data.description,
           type: data.type,
         });
         setIsOpenModalGroup(!isOpenModalGroup);
-        console.log(account);
-        onHandleModal(account.data);
+        console.log(proxy);
+        onHandleModal(proxy.data);
         break;
       case ACTION_ENUM.Edit:
         if (!data?.name) return;
@@ -162,4 +162,4 @@ const ModalAccount = ({
 
 //ModalGroup.propTypes = {};
 
-export default ModalAccount;
+export default ModalProxy;

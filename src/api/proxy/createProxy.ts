@@ -1,6 +1,6 @@
 import { hookApi } from "api/hookApi";
 import axios from "axios";
-export interface ICreateAccount {
+export interface ICreateProxy {
   name: string;
 
   active?: boolean;
@@ -14,10 +14,10 @@ export interface ICreateAccount {
   userId?: number;
 }
 
-export const createAccount = async (params: ICreateAccount) => {
-  return await hookApi("post", `accounts`, {
+export const createProxy = async (params: ICreateProxy) => {
+  return await hookApi("post", `proxies`, {
     params,
     _success: true,
-    title: "Create accounts",
+    title: "Create Proxies",
   });
 };
