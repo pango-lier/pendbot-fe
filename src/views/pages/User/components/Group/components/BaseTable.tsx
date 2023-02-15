@@ -61,7 +61,7 @@ const BaseTable = ({ user }: { user: UserI }) => {
   const fetchData = async () => {
     try {
       const response = await getGroups({ limit: 100, offset: 0 });
-      setData(response.data.groupDtos.nodes);
+      setData(response.data.result);
     } catch (error) {
       notifyError(error);
     }

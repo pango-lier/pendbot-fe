@@ -97,7 +97,7 @@ const BaseTable = () => {
       const response = await getSocials({
         limit,
         offset,
-        sorted: [{ id: 'listing.id', desc: true }],
+        sorted: [{ id: 'social.id', desc: true }],
         q,
       });
       setData(response.data.result);

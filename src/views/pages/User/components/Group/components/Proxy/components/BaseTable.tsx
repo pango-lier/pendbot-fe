@@ -61,7 +61,7 @@ const BaseTable = ({ user, group }: IUserGroupProps) => {
   const fetchData = async () => {
     try {
       const response = await getProxies({ limit: 100, offset: 0 });
-      setData(response.data.accountDtos.nodes);
+      setData(response.data.result);
     } catch (error) {
       notifyError(error);
     }

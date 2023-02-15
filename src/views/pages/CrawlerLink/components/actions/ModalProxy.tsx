@@ -49,7 +49,7 @@ const ModalProxy = ({
     React.CSSProperties | undefined
   >();
   const [type, setType] = useState<CrawlerLinkEnum>(CrawlerLinkEnum.Normal);
-  const [data, setData] = useState<ICrawlerLink>();
+  const [data, setData] = useState<ICrawlerLink>({ type: CrawlerLinkEnum.Normal });
   const [socials, setSocials] = useState<IOptions[]>([]);
   const [socialSelected, setSocialSelected] = useState<any>();
   useEffect(() => {

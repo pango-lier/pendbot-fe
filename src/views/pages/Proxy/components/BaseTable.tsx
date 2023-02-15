@@ -98,7 +98,7 @@ const BaseTable = () => {
       const response = await getProxies({
         limit,
         offset,
-        sorted: [{ id: 'listing.id', desc: true }],
+        sorted: [{ id: 'id', desc: true }],
         q,
       });
       setData(response.data.result);
