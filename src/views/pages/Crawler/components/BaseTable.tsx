@@ -14,7 +14,7 @@ import { ACTION_ENUM } from "utility/enum/actions";
 import ModalProxy from "./actions/ModalProxy";
 import { ICrawler } from "api/crawler/crawler/type/crawler.interface";
 import { getCrawler } from "api/crawler/crawler/gets";
-import { Search } from "react-feather";
+import { Loader, Search } from "react-feather";
 
 const BaseTable = () => {
   const [isOpenModalGroup, setIsOpenModalGroup] = useState<boolean>(false);
@@ -25,6 +25,29 @@ const BaseTable = () => {
   const [perPage, setPerPage] = useState<number>(10);
   const [total, setTotal] = useState<number>(0);
   const [action, setAction] = useState<ACTION_ENUM>(ACTION_ENUM.None);
+
+  let timeout;
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [searchInput, setSearchInput] = useState<string | undefined>();
+  const debounce = (func, wait) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(func, wait);
+  };
+
+  const handleSearch = (e) => {
+    if (e?.target) {
+      debounce(() => {
+        fetchData(
+          {
+            limit: perPage,
+            offset: 0,
+          },
+          e.target.value,
+        );
+      }, 320);
+    }
+  };
 
   const onCreateHandle = () => {
     setAction(ACTION_ENUM.Create);
@@ -69,15 +92,21 @@ const BaseTable = () => {
     });
   };
 
-  const fetchData = async ({ limit, offset }) => {
-    const response = await getCrawler({
-      limit,
-      offset,
-    });
-    console.log(response.data);
-    setData(response.data.result);
-    setTotal(response.data.total);
+  const fetchData = async ({ limit, offset }, q = '') => {
+    try {
+      setLoading(true);
+      const response = await getCrawler({
+        limit,
+        offset,
+        sorted: [{ id: 'id', desc: true }],
+        q,
+      });
+      setData(response.data.result);
+      setTotal(response.data.total);
+    } catch (error) { }
+    setLoading(false);
   };
+
   useEffect(() => {
     // fetchData();
   }, []);
@@ -106,15 +135,21 @@ const BaseTable = () => {
               className="border-0 bg-transparent cursor-pointer me-0"
               htmlFor="searchInput"
             >
-              <Search color="primary" size={14} />
+              <Loader
+                className={`mr-2 ${loading ? 'cursor-not-allowed gly-spin' : 'cursor-pointer'
+                  }`}
+                color="blue"
+                size={24}
+              />
             </label>
+
             <Input
               id="searchInput"
               type="search"
               className="border-0 shadow-none bg-transparent"
               placeholder="Search..."
-              // onChange={handleSearch}
-              // value={searchInput}
+              onChange={handleSearch}
+              value={searchInput}
             />
           </div>
           <>Action</>
@@ -142,9 +177,9 @@ const BaseTable = () => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </th>
                   ))}
                 </tr>

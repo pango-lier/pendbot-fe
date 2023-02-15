@@ -5,7 +5,7 @@ export interface IOptionsHookApi {
   _error?: boolean;
   _success?: boolean;
   title?: string;
-  params?: object;
+  params?: any;
 }
 
 export const hookApi = async (
@@ -17,6 +17,17 @@ export const hookApi = async (
   }
 ) => {
   try {
+    if (method === "get" && params) {
+      if (params?.sorted) {
+        params.sorted = JSON.stringify(params.sorted);
+      }
+      if (params?.filtered) {
+        params.filtered = JSON.stringify(params.filtered);
+      }
+
+      const query = new URLSearchParams(params).toString();
+      uri = `${uri}?${query}`;
+    }
     const data = await axios[method](
       `${process.env.REACT_APP_SERVER_URL}/${uri}`,
       params
