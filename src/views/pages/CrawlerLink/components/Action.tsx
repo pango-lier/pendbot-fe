@@ -14,7 +14,7 @@ import { CrawlerLinkEnum } from "../../../../api/crawler/crawler/enum/crawler-li
 const Action = ({ row, onEditHandle, onDeleteHandle }: any) => {
   const onRunCommandService = async () => {
     let commands: any = 'crawlerYoutubeNormal';
-    if (row.type === CrawlerLinkEnum.Auto) commands = 'crawlerYoutubeAuto';
+    if (row.type === CrawlerLinkEnum.Auto) commands = 'crawlerYoutubeShortAuto';
     await await runQueueService({
       commands,
       crawlerLinkIds: [row.id]
