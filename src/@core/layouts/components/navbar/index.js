@@ -1,40 +1,28 @@
 // ** React Imports
-import { Fragment } from 'react'
+import { Fragment } from "react";
 
 // ** Custom Components
-import NavbarUser from './NavbarUser'
+import NavbarUser from "./NavbarUser";
 
 // ** Third Party Components
-import { Sun, Moon } from 'react-feather'
+import { Sun, Moon } from "react-feather";
 
 // ** Reactstrap Imports
-import { NavItem, NavLink } from 'reactstrap'
+import { NavItem, NavLink } from "reactstrap";
+import NavbarBookmarks from "./NavbarBookmarks";
 
-const ThemeNavbar = props => {
+const ThemeNavbar = (props) => {
   // ** Props
-  const { skin, setSkin } = props
-
-  // ** Function to toggle Theme (Light/Dark)
-  const ThemeToggler = () => {
-    if (skin === 'dark') {
-      return <Sun className='ficon' onClick={() => setSkin('light')} />
-    } else {
-      return <Moon className='ficon' onClick={() => setSkin('dark')} />
-    }
-  }
+  const { skin, setSkin, setMenuVisibility } = props;
 
   return (
     <Fragment>
-      <div className='bookmark-wrapper d-flex align-items-center'>
-        <NavItem className='d-none d-lg-block'>
-          <NavLink className='nav-link-style'>
-            <ThemeToggler />
-          </NavLink>
-        </NavItem>
+      <div className="bookmark-wrapper d-flex align-items-center">
+        <NavbarBookmarks setMenuVisibility={setMenuVisibility} />
       </div>
       <NavbarUser skin={skin} setSkin={setSkin} />
     </Fragment>
-  )
-}
+  );
+};
 
-export default ThemeNavbar
+export default ThemeNavbar;
