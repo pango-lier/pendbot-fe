@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import ReactSelect from "react-select";
 import {
@@ -80,7 +79,6 @@ const ModalGroup = ({
     }
   };
 
-
   const create: React.FormEventHandler<HTMLButtonElement> = async (
     e: React.FormEvent<HTMLButtonElement>
   ) => {
@@ -88,12 +86,11 @@ const ModalGroup = ({
       switch (action) {
         case ACTION_ENUM.Create:
           const group = await createGroup({
-              name,
-              secretKey,
-              secretName,
-              groupType,
-              userId: user.id,
-            
+            name,
+            secretKey,
+            secretName,
+            groupType,
+            userId: user.id,
           });
           setIsOpenModalGroup(!isOpenModalGroup);
           onHandle(group.data.createOneGroupDto);
@@ -101,13 +98,12 @@ const ModalGroup = ({
           break;
         case ACTION_ENUM.Edit:
           const update = await updateGroup({
-              id: row?.id,
-              name,
-              secretKey,
-              secretName,
-              groupType,
-              userId: user.id,
-            
+            id: row?.id,
+            name,
+            secretKey,
+            secretName,
+            groupType,
+            userId: user.id,
           });
           setIsOpenModalGroup(!isOpenModalGroup);
           onHandle(update.data.updateOneGroupDto);
@@ -166,6 +162,18 @@ const ModalGroup = ({
               />
             </div>
             <div className="mb-1">
+              <Label className="form-label" for="register-secret-name">
+                Secret Name
+              </Label>
+              <Input
+                defaultValue={secretName}
+                type="text"
+                id="register-secret-name"
+                placeholder="secret name ..."
+                onChange={(e) => onChangeSecretName(e)}
+              />
+            </div>
+            <div className="mb-1">
               <Label className="form-label" for="register-secret-key">
                 Secret Key
               </Label>
@@ -175,18 +183,6 @@ const ModalGroup = ({
                 id="register-secret-key"
                 placeholder="secret key ..."
                 onChange={(e) => onChangeSecretKey(e)}
-              />
-            </div>
-            <div className="mb-1">
-              <Label className="form-label" for="register-secret-key">
-                Secret Name
-              </Label>
-              <Input
-                defaultValue={secretName}
-                type="text"
-                id="register-secret-key"
-                placeholder="secret key ..."
-                onChange={(e) => onChangeSecretName(e)}
               />
             </div>
           </Form>

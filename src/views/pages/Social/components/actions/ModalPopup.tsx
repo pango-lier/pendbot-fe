@@ -16,7 +16,10 @@ import {
   ModalHeader,
 } from "reactstrap";
 import { ACTION_ENUM } from "utility/enum/actions";
-import { enumToFormatSelected, enumToFormatSelectOptions } from "utility/helper/enum";
+import {
+  enumToFormatSelected,
+  enumToFormatSelectOptions,
+} from "utility/helper/enum";
 
 import { notifyError, notifySuccess } from "utility/notify";
 
@@ -47,7 +50,11 @@ const ModalUser = ({
     if (row) {
       setData(row);
       setType(row?.socialType || SocialEnum.NONE);
-      console.log(SocialEnum, row?.socialType, enumToFormatSelected(SocialEnum, row?.socialType));
+      console.log(
+        SocialEnum,
+        row?.socialType,
+        enumToFormatSelected(SocialEnum, row?.socialType)
+      );
     }
   }, []);
 
@@ -85,7 +92,7 @@ const ModalUser = ({
           if (!data) return;
           const update = await updateSocial(row?.id, {
             ...data,
-            userId: +(row?.userId || 0)
+            userId: +(row?.userId || 0),
           });
           setIsOpenModalGroup(!isOpenModalGroup);
           onHandle(update.data);
@@ -93,9 +100,7 @@ const ModalUser = ({
           break;
         case ACTION_ENUM.Delete:
           if (!row?.id) return;
-          const destroy = await deleteSocial(
-            row?.id,
-          );
+          const destroy = await deleteSocial(row?.id);
           setIsOpenModalGroup(!isOpenModalGroup);
           onHandle(row);
 
@@ -115,7 +120,7 @@ const ModalUser = ({
         toggle={() => setIsOpenModalGroup(!isOpenModalGroup)}
       >
         <ModalHeader toggle={() => setIsOpenModalGroup(!isOpenModalGroup)}>
-          Group Modal
+          Social
         </ModalHeader>
         <ModalBody>
           <Form className="auth-register-form mt-2" style={styleAction}>
@@ -142,7 +147,7 @@ const ModalUser = ({
                 id="register-name"
                 placeholder="johndoe"
                 autoFocus
-                onChange={(e) => onChangeName(e, 'name')}
+                onChange={(e) => onChangeName(e, "name")}
               />
             </div>
             <div className="mb-1">
@@ -154,7 +159,7 @@ const ModalUser = ({
                 type="text"
                 id="register-username"
                 placeholder="john@example.com"
-                onChange={(e) => onChangeName(e, 'username')}
+                onChange={(e) => onChangeName(e, "username")}
               />
             </div>
             <div className="mb-1">
@@ -165,7 +170,7 @@ const ModalUser = ({
                 type="email"
                 id="register-password"
                 placeholder="password"
-                onChange={(e) => onChangeName(e, 'password')}
+                onChange={(e) => onChangeName(e, "password")}
               />
               {/* <InputPasswordToggle
                 className="input-group-merge"
