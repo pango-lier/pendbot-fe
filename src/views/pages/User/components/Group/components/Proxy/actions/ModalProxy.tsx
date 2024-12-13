@@ -12,49 +12,104 @@ import {
 } from "reactstrap";
 import { ACTION_ENUM } from "utility/enum/actions";
 import { notifyError, notifySuccess } from "utility/notify";
-import { IGroup } from "../../columns";
-import { IProxy } from "../components/columns";
+
 import { createProxy } from "api/proxy/createProxy";
 import { updateProxy } from "api/proxy/updateProxy";
 import { deleteProxy } from "api/proxy/deleteProxy";
+import { GroupEnum } from "api/group/enum/group.enum";
+import { getGroups } from "api/group/getGroups";
+import {
+  enumToFormatSelected,
+  enumToFormatSelectOptions,
+} from "utility/helper/enum";
+import { ProxyTypeEnum } from "api/proxy/enum/proxyType.enum";
+import { IProxy } from "views/pages/Proxy/components/columns";
+import { IGroup } from "../../columns";
+
+interface IGroupSelect {
+  value: number;
+  label: string;
+  id: number;
+}
 
 interface IModalIProxyProps {
   row: IProxy | undefined;
-  group: IGroup;
   isOpenModalGroup: boolean;
   setIsOpenModalGroup: Function;
   onHandleModal: Function;
   action: ACTION_ENUM;
+  group: IGroup;
 }
 const ModalProxy = ({
   isOpenModalGroup,
   setIsOpenModalGroup,
-  group,
+  group:groupProp,
   row,
   onHandleModal,
   action,
 }: IModalIProxyProps) => {
+  const [group, setGroup] = useState<IGroupSelect>();
+  const [groupOptions, setGroupOptions] = useState<IGroupSelect[]>();
   const [name, setName] = useState<string>("");
-  const [active, setActive] = useState<number>(1);
+  const [active, setActive] = useState<boolean>(true);
+  const [host, setHost] = useState<string>();
+  const [port, setPort] = useState<number>();
+
+  const [username, setUserName] = useState<string>();
+  const [password, setPassword] = useState<string>();
+  const [country_code, setCountryCode] = useState<string>();
   const [proxyId, setProxyId] = useState<string>("");
   const [proxyType, setProxyType] = useState<string>("");
+
   const [styleAction, setStyleAction] = useState<
     React.CSSProperties | undefined
   >();
 
   useEffect(() => {
-    console.log(row);
+    fetchGroups();
     if (row) {
       setName(row.name);
-      setActive(row.active ? 1 : 0);
+      setActive(row.active);
       setProxyId(row.proxyId);
       setProxyType(row.proxyType);
+      setHost(row.host);
+      setPort(row.port);
+      setUserName(row.username);
+      setPassword(row.password);
+      setCountryCode(row.country_code);
     }
-  }, [row]);
+  }, []);
+  const fetchGroups = async () => {
+    const groups = await getGroups();
+    setGroupOptions(
+      groups.data.result?.map((i) => {
+        return {
+          id: i.id,
+          value: i.id,
+          label: i.name,
+        };
+      })
+    );
+    if (row && row.groupId) {
+      const fGroup = groups.data.result?.find((i) => i.id === row.groupId);
+      if (fGroup)
+        setGroup({
+          id: fGroup.id,
+          value: fGroup.id,
+          label: fGroup.name,
+        });
+    }
+  };
   useEffect(() => {
     if (action === ACTION_ENUM.Delete)
       setStyleAction({ pointerEvents: "none", opacity: "0.7" });
   }, [action]);
+
+  const onChangeGroup = (e) => {
+    setGroup(e);
+    console.log(e);
+    // groupOptions
+  };
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e && e?.target) {
@@ -63,7 +118,7 @@ const ModalProxy = ({
   };
   const onChangeActive = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e && e?.target) {
-      setActive(parseInt(e.target.value));
+      setActive(!active);
     }
   };
   const onChangeProxyId = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +129,37 @@ const ModalProxy = ({
 
   const onChangeProxyType = (e) => {
     if (e && e?.target) {
-      setProxyType(e.value);
+      setProxyType(e.target.value);
+    }
+  };
+
+  const onChangeHost = (e) => {
+    if (e && e?.target) {
+      setHost(e.target.value);
+    }
+  };
+
+  const onChangePort = (e) => {
+    if (e && e?.target) {
+      setPort(e.target.value);
+    }
+  };
+
+  const onChangeUserName = (e) => {
+    if (e && e?.target) {
+      setUserName(e.target.value);
+    }
+  };
+
+  const onChangePassword = (e) => {
+    if (e && e?.target) {
+      setPassword(e.target.value);
+    }
+  };
+
+  const onChangeCountryCode = (e) => {
+    if (e && e?.target) {
+      setCountryCode(e.target.value);
     }
   };
 
@@ -85,36 +170,40 @@ const ModalProxy = ({
       case ACTION_ENUM.Create:
         const proxy = await createProxy({
           name,
-          active: active === 1,
+          active: active,
           proxyId,
           proxyType,
-          groupId: group.id,
+          groupId: group?.id || null,
+          country_code,
+          host,
+          password,
+          port,
+          username,
         });
         setIsOpenModalGroup(!isOpenModalGroup);
-        onHandleModal(proxy.data.createOneProxyDto);
+        console.log(proxy);
+        onHandleModal(proxy.data);
         break;
       case ACTION_ENUM.Edit:
         if (row?.id) {
           const update = await updateProxy(+row?.id, {
             name,
-            active: active === 1,
+            active: active,
             proxyId,
             proxyType,
-            groupId: group?.id || undefined,
+            groupId: group?.id || null,
           });
           setIsOpenModalGroup(!isOpenModalGroup);
 
           onHandleModal(update.data);
         }
-
         break;
       case ACTION_ENUM.Delete:
         if (row?.id) {
-          const destroy = await deleteProxy(+row.id);
+          await deleteProxy(+row.id);
           setIsOpenModalGroup(!isOpenModalGroup);
-          onHandleModal(destroy.data);
+          onHandleModal({ id: row.id });
         }
-
         break;
       default:
         break;
@@ -144,6 +233,39 @@ const ModalProxy = ({
                 onChange={(e) => onChangeName(e)}
               />
             </div>
+            <div className="mb-1">
+              <Label className="form-label" for="register-group">
+                Group
+              </Label>
+              {/* <ReactSelect
+                defaultValue={group}
+                value={group}
+                className="react-select"
+                options={groupOptions}
+                onChange={(e) => onChangeGroup(e)}
+                isClearable={true}
+              /> */}
+              <ReactSelect
+                defaultValue={enumToFormatSelected(ProxyTypeEnum, proxyType)}
+                className="react-select"
+                options={enumToFormatSelectOptions(ProxyTypeEnum)}
+                isClearable={false}
+                onChange={(e) => onChangeGroup(e)}
+              />
+            </div>
+
+            <div className="mb-1">
+              <Label className="form-label" for="proxy-type">
+                Proxy Type
+              </Label>
+              <Input
+                defaultValue={proxyType}
+                id="proxy-type"
+                type="text"
+                placeholder="proxy type ..."
+                onChange={(e) => onChangeProxyType(e)}
+              />
+            </div>
 
             <div className="mb-1">
               <Label className="form-label" for="proxy-id">
@@ -157,28 +279,78 @@ const ModalProxy = ({
                 onChange={(e) => onChangeProxyId(e)}
               />
             </div>
+
             <div className="mb-1">
-              <Label className="form-label" for="proxy-type">
-                Proxy Type
+              <Label className="form-label" for="host">
+                Host
               </Label>
               <Input
-                defaultValue={proxyType}
-                id="proxy-type"
+                defaultValue={host}
+                id="host"
                 type="text"
-                placeholder="proxy type ..."
-                onChange={(e) => onChangeProxyType(e)}
+                placeholder="Host..."
+                onChange={(e) => onChangeHost(e)}
               />
             </div>
+            <div className="mb-1">
+              <Label className="form-label" for="port">
+                Port
+              </Label>
+              <Input
+                defaultValue={port}
+                id="port"
+                type="number"
+                placeholder="Port ..."
+                onChange={(e) => onChangePort(e)}
+              />
+            </div>
+            <div className="mb-1">
+              <Label className="form-label" for="country">
+                Country
+              </Label>
+              <Input
+                defaultValue={country_code}
+                id="country"
+                type="text"
+                placeholder="Country..."
+                onChange={(e) => onChangeCountryCode(e)}
+              />
+            </div>
+            <div className="mb-1">
+              <Label className="form-label" for="username">
+                User name
+              </Label>
+              <Input
+                defaultValue={username}
+                id="username"
+                type="text"
+                placeholder="User name..."
+                onChange={(e) => onChangeUserName(e)}
+              />
+            </div>
+            <div className="mb-1">
+              <Label className="form-label" for="password">
+                Password
+              </Label>
+              <Input
+                defaultValue={password}
+                id="password"
+                type="text"
+                placeholder="Password..."
+                onChange={(e) => onChangePassword(e)}
+              />
+            </div>
+
             <div className="mb-1">
               <Label for="switch-primary" className="form-check-label">
                 Active proxy
               </Label>
               <div className="form-switch form-check-primary">
                 <Input
+                  checked={active}
                   type="switch"
                   id="switch-primary"
                   name="primary"
-                  defaultValue={active}
                   onChange={(e) => onChangeActive(e)}
                 />
               </div>

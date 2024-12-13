@@ -90,7 +90,7 @@ const ModalGroup = ({
             secretKey,
             secretName,
             groupType,
-            userId: user.id,
+            userId: parseInt(user.id),
           });
           setIsOpenModalGroup(!isOpenModalGroup);
           onHandle(group.data.createOneGroupDto);
@@ -103,7 +103,7 @@ const ModalGroup = ({
             secretKey,
             secretName,
             groupType,
-            userId: user.id,
+            userId: parseInt(user.id),
           });
           setIsOpenModalGroup(!isOpenModalGroup);
           onHandle(update.data.updateOneGroupDto);
@@ -152,7 +152,7 @@ const ModalGroup = ({
               />
             </div>
             <div className="mb-1">
-              <Label className="form-label">Basic</Label>
+              <Label className="form-label">Group type</Label>
               <ReactSelect
                 defaultValue={enumToFormatSelected(GroupEnum, groupType)}
                 className="react-select"

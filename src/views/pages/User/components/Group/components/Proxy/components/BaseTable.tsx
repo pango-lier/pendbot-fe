@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { COLUMNS, IProxy } from "./columns";
+import { COLUMNS } from "./columns";
 import {
   ExpandedState,
   flexRender,
@@ -13,6 +13,7 @@ import ModalProxy from "../actions/ModalProxy";
 import { Table } from "reactstrap";
 import { ACTION_ENUM } from "utility/enum/actions";
 import { getProxies } from "api/proxy/getProxies";
+import { IProxy } from "views/pages/Proxy/components/columns";
 
 const BaseTable = ({ user, group }: IUserGroupProps) => {
   const [isOpenModalGroup, setIsOpenModalGroup] = useState<boolean>(false);

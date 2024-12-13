@@ -19,6 +19,11 @@ import { deleteProxy } from "api/proxy/deleteProxy";
 import { IProxy } from "../columns";
 import { GroupEnum } from "api/group/enum/group.enum";
 import { getGroups } from "api/group/getGroups";
+import {
+  enumToFormatSelected,
+  enumToFormatSelectOptions,
+} from "utility/helper/enum";
+import { ProxyTypeEnum } from "api/proxy/enum/proxyType.enum";
 
 interface IGroupSelect {
   value: number;
@@ -44,8 +49,15 @@ const ModalProxy = ({
   const [groupOptions, setGroupOptions] = useState<IGroupSelect[]>();
   const [name, setName] = useState<string>("");
   const [active, setActive] = useState<boolean>(true);
+  const [host, setHost] = useState<string>();
+  const [port, setPort] = useState<number>();
+
+  const [username, setUserName] = useState<string>();
+  const [password, setPassword] = useState<string>();
+  const [country_code, setCountryCode] = useState<string>();
   const [proxyId, setProxyId] = useState<string>("");
   const [proxyType, setProxyType] = useState<string>("");
+
   const [styleAction, setStyleAction] = useState<
     React.CSSProperties | undefined
   >();
@@ -57,6 +69,11 @@ const ModalProxy = ({
       setActive(row.active);
       setProxyId(row.proxyId);
       setProxyType(row.proxyType);
+      setHost(row.host);
+      setPort(row.port);
+      setUserName(row.username);
+      setPassword(row.password);
+      setCountryCode(row.country_code);
     }
   }, []);
   const fetchGroups = async () => {
@@ -113,6 +130,36 @@ const ModalProxy = ({
     }
   };
 
+  const onChangeHost = (e) => {
+    if (e && e?.target) {
+      setHost(e.target.value);
+    }
+  };
+
+  const onChangePort = (e) => {
+    if (e && e?.target) {
+      setPort(e.target.value);
+    }
+  };
+
+  const onChangeUserName = (e) => {
+    if (e && e?.target) {
+      setUserName(e.target.value);
+    }
+  };
+
+  const onChangePassword = (e) => {
+    if (e && e?.target) {
+      setPassword(e.target.value);
+    }
+  };
+
+  const onChangeCountryCode = (e) => {
+    if (e && e?.target) {
+      setCountryCode(e.target.value);
+    }
+  };
+
   const onAccept: React.FormEventHandler<HTMLButtonElement> = async (
     e: React.FormEvent<HTMLButtonElement>
   ) => {
@@ -124,6 +171,11 @@ const ModalProxy = ({
           proxyId,
           proxyType,
           groupId: group?.id || null,
+          country_code,
+          host,
+          password,
+          port,
+          username,
         });
         setIsOpenModalGroup(!isOpenModalGroup);
         console.log(proxy);
@@ -179,30 +231,26 @@ const ModalProxy = ({
               />
             </div>
             <div className="mb-1">
-              <Label className="form-label" for="register-name">
-                Name
+              <Label className="form-label" for="register-group">
+                Group
               </Label>
-              <ReactSelect
+              {/* <ReactSelect
                 defaultValue={group}
                 value={group}
                 className="react-select"
                 options={groupOptions}
                 onChange={(e) => onChangeGroup(e)}
                 isClearable={true}
+              /> */}
+              <ReactSelect
+                defaultValue={enumToFormatSelected(ProxyTypeEnum, proxyType)}
+                className="react-select"
+                options={enumToFormatSelectOptions(ProxyTypeEnum)}
+                isClearable={false}
+                onChange={(e) => onChangeGroup(e)}
               />
             </div>
-            <div className="mb-1">
-              <Label className="form-label" for="proxy-id">
-                Proxy Id
-              </Label>
-              <Input
-                defaultValue={proxyId}
-                id="proxy-id"
-                type="text"
-                placeholder="Proxy Id ..."
-                onChange={(e) => onChangeProxyId(e)}
-              />
-            </div>
+
             <div className="mb-1">
               <Label className="form-label" for="proxy-type">
                 Proxy Type
@@ -215,6 +263,81 @@ const ModalProxy = ({
                 onChange={(e) => onChangeProxyType(e)}
               />
             </div>
+
+            <div className="mb-1">
+              <Label className="form-label" for="proxy-id">
+                Proxy Id
+              </Label>
+              <Input
+                defaultValue={proxyId}
+                id="proxy-id"
+                type="text"
+                placeholder="Proxy Id ..."
+                onChange={(e) => onChangeProxyId(e)}
+              />
+            </div>
+
+            <div className="mb-1">
+              <Label className="form-label" for="host">
+                Host
+              </Label>
+              <Input
+                defaultValue={host}
+                id="host"
+                type="text"
+                placeholder="Host..."
+                onChange={(e) => onChangeHost(e)}
+              />
+            </div>
+            <div className="mb-1">
+              <Label className="form-label" for="port">
+                Port
+              </Label>
+              <Input
+                defaultValue={port}
+                id="port"
+                type="number"
+                placeholder="Port ..."
+                onChange={(e) => onChangePort(e)}
+              />
+            </div>
+            <div className="mb-1">
+              <Label className="form-label" for="country">
+                Country
+              </Label>
+              <Input
+                defaultValue={country_code}
+                id="country"
+                type="text"
+                placeholder="Country..."
+                onChange={(e) => onChangeCountryCode(e)}
+              />
+            </div>
+            <div className="mb-1">
+              <Label className="form-label" for="username">
+                User name
+              </Label>
+              <Input
+                defaultValue={username}
+                id="username"
+                type="text"
+                placeholder="User name..."
+                onChange={(e) => onChangeUserName(e)}
+              />
+            </div>
+            <div className="mb-1">
+              <Label className="form-label" for="password">
+                Password
+              </Label>
+              <Input
+                defaultValue={password}
+                id="password"
+                type="text"
+                placeholder="Password..."
+                onChange={(e) => onChangePassword(e)}
+              />
+            </div>
+
             <div className="mb-1">
               <Label for="switch-primary" className="form-check-label">
                 Active proxy

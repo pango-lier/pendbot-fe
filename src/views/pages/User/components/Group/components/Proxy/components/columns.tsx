@@ -4,19 +4,8 @@ import { Button } from "reactstrap";
 import { Tooltip } from "views/pages/components/Tooltip";
 import Action from "./Action";
 import CheckboxTable from "./CheckboxTable";
+import { IProxy } from "views/pages/Proxy/components/columns";
 
-export interface IProxy {
-  checkbox?: any;
-  expanded?: any;
-  id: string | number;
-  name: string;
-  active: boolean;
-  proxyId: string;
-  proxyType: string;
-  groupId: number;
-  createdAt: Date;
-  actions?: any;
-}
 
 const columnHelper = createColumnHelper<IProxy>();
 

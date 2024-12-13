@@ -27,6 +27,16 @@ export interface IProxy {
   groupId?: number;
   createdAt: Date;
   actions?: any;
+  host: string;
+
+  port: number;
+
+  username: string;
+
+  password: string;
+
+  country_code: string;
+
 }
 
 const columnHelper = createColumnHelper<IProxy>();

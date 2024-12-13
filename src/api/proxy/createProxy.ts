@@ -9,6 +9,16 @@ export interface ICreateProxy {
 
   proxyType?: string;
 
+  host?: string;
+
+  port?: number;
+
+  username?: string;
+
+  password?: string;
+
+  country_code?: string;
+
   groupId?: number | string | null;
 
   userId?: number;
