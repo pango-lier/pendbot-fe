@@ -31,6 +31,6 @@ export interface ICrawlerLink extends ICrawlerLinkDto {
 
 export class RunCrawlerQueueDto {
   crawlerLinks?: ICrawlerLinkDto[];
-  commands?: "crawlerYoutubeNormal" | "crawlerYoutubeAuto";
+  commands?: "crawlerYoutubeFromUrl" | "crawlerYoutubeAuto";
   crawlerLinkIds?: number[];
 }
