@@ -59,7 +59,7 @@ export default [
       },
       {
         id: "socials",
-        title: "Social",
+        title: "Social Account",
         icon: <Activity size={20} />,
         navLink: "/socials",
       },

@@ -173,7 +173,7 @@ const ModalProxy = ({
             </div>
             <div className="mb-1">
               <Label className="form-label" for="register-type">
-                Crawler Link Type
+                Crawler Type
               </Label>
               <ReactSelect
                 id="register-type"
@@ -186,7 +186,7 @@ const ModalProxy = ({
             </div>
             <div className="mb-1">
               <Label className="form-label" for="register-social">
-                Socials
+                Socials Target
               </Label>
               <ReactSelect
                 id="register-social"

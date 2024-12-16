@@ -123,7 +123,7 @@ const ModalGroup = ({
         toggle={() => setIsOpenModalGroup(!isOpenModalGroup)}
       >
         <ModalHeader toggle={() => setIsOpenModalGroup(!isOpenModalGroup)}>
-          {`Crawler link ${action}`}
+          {`Social target (${action})`}
         </ModalHeader>
         <ModalBody>
           <Form className="auth-register-form mt-2" style={styleAction}>
@@ -165,6 +165,7 @@ const ModalGroup = ({
                 autoFocus
                 onChange={(e) => onChangeName(e, "link")}
               />
+              <small>example:  https://www.facebook.com/profile.php?id=100089781420908</small>
             </div>
           </Form>
         </ModalBody>
