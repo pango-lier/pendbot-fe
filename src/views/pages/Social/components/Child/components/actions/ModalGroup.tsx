@@ -123,13 +123,13 @@ const ModalGroup = ({
         toggle={() => setIsOpenModalGroup(!isOpenModalGroup)}
       >
         <ModalHeader toggle={() => setIsOpenModalGroup(!isOpenModalGroup)}>
-          Crawler link
+          {`Crawler link ${action}`}
         </ModalHeader>
         <ModalBody>
           <Form className="auth-register-form mt-2" style={styleAction}>
             <div className="mb-1">
               <Label className="form-label" for="register-type">
-                Crawler Link Type
+                Social
               </Label>
               <ReactSelect
                 id="register-type"

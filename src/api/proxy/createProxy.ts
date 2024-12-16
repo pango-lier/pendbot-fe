@@ -5,23 +5,23 @@ export interface ICreateProxy {
 
   active?: boolean;
 
-  proxyId?: string;
+  proxyId?: string| null;
 
-  proxyType?: string;
+  proxyType?: string| null;
 
-  host?: string;
+  host?: string| null;
 
-  port?: number;
+  port?: number| null;
 
-  username?: string;
+  username?: string| null;
 
-  password?: string;
+  password?: string| null;
 
-  country_code?: string;
+  country_code?: string| null;
 
   groupId?: number | string | null;
 
-  userId?: number;
+  userId?: number| null;
 }
 
 export const createProxy = async (params: ICreateProxy) => {

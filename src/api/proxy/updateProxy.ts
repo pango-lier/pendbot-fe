@@ -1,18 +1,8 @@
 import axios from "axios";
+import { IProxy } from "views/pages/Proxy/components/columns";
+import { ICreateProxy } from "./createProxy";
 
-export interface IUpdateProxy {
-  name: string;
-
-  active?: boolean;
-
-  proxyId?: string;
-
-  proxyType?: string;
-
-  groupId?: number | string | null;
-
-  userId?: number;
-}
+export interface IUpdateProxy extends ICreateProxy {}
 
 export const updateProxy = async (id: number, params: IUpdateProxy) => {
   return await axios.patch(

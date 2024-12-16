@@ -1,4 +1,3 @@
-
 import { deleteSocial } from "api/socials/delete";
 import React, { useEffect, useState } from "react";
 import ReactSelect from "react-select";
@@ -35,7 +34,6 @@ const ModalUser = ({
   action,
   onHandle,
 }: IModalGroupProps) => {
-
   const [styleAction, setStyleAction] = useState<
     React.CSSProperties | undefined
   >();
@@ -59,7 +57,6 @@ const ModalUser = ({
     }
   };
 
-
   const create: React.FormEventHandler<HTMLButtonElement> = async (
     e: React.FormEvent<HTMLButtonElement>
   ) => {
@@ -77,7 +74,7 @@ const ModalUser = ({
           if (!data) return;
           const update = await updateArticle(row?.id, {
             ...data,
-            userId: +(row?.userId || 0)
+            userId: +(row?.userId || 0),
           });
           setIsOpenModalGroup(!isOpenModalGroup);
           onHandle(update.data);
@@ -85,9 +82,7 @@ const ModalUser = ({
           break;
         case ACTION_ENUM.Delete:
           if (!row?.id) return;
-          const destroy = await deleteArticle(
-            row?.id,
-          );
+          const destroy = await deleteArticle(row?.id);
           setIsOpenModalGroup(!isOpenModalGroup);
           onHandle(row);
 
@@ -107,7 +102,7 @@ const ModalUser = ({
         toggle={() => setIsOpenModalGroup(!isOpenModalGroup)}
       >
         <ModalHeader toggle={() => setIsOpenModalGroup(!isOpenModalGroup)}>
-          Group Article
+          {`Article (${action})`}
         </ModalHeader>
         <ModalBody>
           <Form className="auth-register-form mt-2" style={styleAction}>
@@ -121,7 +116,7 @@ const ModalUser = ({
                 id="register-title"
                 placeholder="johndoe"
                 autoFocus
-                onChange={(e) => onChangeName(e, 'title')}
+                onChange={(e) => onChangeName(e, "title")}
               />
             </div>
           </Form>
