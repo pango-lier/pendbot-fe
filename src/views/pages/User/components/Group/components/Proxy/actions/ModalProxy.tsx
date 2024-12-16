@@ -43,7 +43,7 @@ interface IModalIProxyProps {
 const ModalProxy = ({
   isOpenModalGroup,
   setIsOpenModalGroup,
-  group:groupProp,
+  group: groupProp,
   row,
   onHandleModal,
   action,
@@ -128,8 +128,8 @@ const ModalProxy = ({
   };
 
   const onChangeProxyType = (e) => {
-    if (e && e?.target) {
-      setProxyType(e.target.value);
+    if (e && e?.value) {
+      setProxyType(e.value);
     }
   };
 
@@ -171,14 +171,14 @@ const ModalProxy = ({
         const proxy = await createProxy({
           name,
           active: active,
-          proxyId,
-          proxyType,
+          proxyId: proxyId || null,
+          proxyType: proxyType || null,
           groupId: group?.id || null,
-          country_code,
-          host,
-          password,
-          port,
-          username,
+          country_code: country_code || null,
+          host: host || null,
+          password: password || null,
+          port: port ? parseInt(`${port}`) : null,
+          username: username || null,
         });
         setIsOpenModalGroup(!isOpenModalGroup);
         console.log(proxy);
@@ -189,9 +189,14 @@ const ModalProxy = ({
           const update = await updateProxy(+row?.id, {
             name,
             active: active,
-            proxyId,
-            proxyType,
+            proxyId: proxyId || null,
+            proxyType: proxyType || null,
             groupId: group?.id || null,
+            country_code: country_code || null,
+            host: host || null,
+            password: password || null,
+            port: port ? parseInt(`${port}`) : null,
+            username: username || null,
           });
           setIsOpenModalGroup(!isOpenModalGroup);
 
@@ -216,7 +221,7 @@ const ModalProxy = ({
         toggle={() => setIsOpenModalGroup(!isOpenModalGroup)}
       >
         <ModalHeader toggle={() => setIsOpenModalGroup(!isOpenModalGroup)}>
-          Basic Modal
+          {`Proxy Modal (${action})`}
         </ModalHeader>
         <ModalBody>
           <Form className="auth-register-form mt-2" style={styleAction}>
@@ -237,20 +242,13 @@ const ModalProxy = ({
               <Label className="form-label" for="register-group">
                 Group
               </Label>
-              {/* <ReactSelect
+              <ReactSelect
                 defaultValue={group}
                 value={group}
                 className="react-select"
                 options={groupOptions}
                 onChange={(e) => onChangeGroup(e)}
                 isClearable={true}
-              /> */}
-              <ReactSelect
-                defaultValue={enumToFormatSelected(ProxyTypeEnum, proxyType)}
-                className="react-select"
-                options={enumToFormatSelectOptions(ProxyTypeEnum)}
-                isClearable={false}
-                onChange={(e) => onChangeGroup(e)}
               />
             </div>
 
@@ -258,11 +256,11 @@ const ModalProxy = ({
               <Label className="form-label" for="proxy-type">
                 Proxy Type
               </Label>
-              <Input
-                defaultValue={proxyType}
-                id="proxy-type"
-                type="text"
-                placeholder="proxy type ..."
+              <ReactSelect
+                defaultValue={enumToFormatSelected(ProxyTypeEnum, proxyType)}
+                className="react-select"
+                options={enumToFormatSelectOptions(ProxyTypeEnum)}
+                isClearable={false}
                 onChange={(e) => onChangeProxyType(e)}
               />
             </div>
