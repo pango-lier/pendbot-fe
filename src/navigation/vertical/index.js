@@ -28,13 +28,13 @@ export default [
     children: [
       {
         id: "Crawler-Link",
-        title: "Crawler",
+        title: "List Crawl",
         icon: <ExternalLink size={20} />,
         navLink: "/crawler-link",
       },
       {
         id: "history-crawler",
-        title: "History",
+        title: "Article Crawl",
         icon: <ExternalLink size={20} />,
         navLink: "/crawler",
       },

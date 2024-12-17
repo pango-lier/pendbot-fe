@@ -1,4 +1,4 @@
-export interface ILink {
+export interface IFile {
   id?: number;
 }
 

@@ -2,12 +2,11 @@ import { ISocialTarget } from "../../socialTargets/type/type.interface";
 import { IUser } from "../../user/type/type.interface";
 import { ArticleStatusEnum } from "../enum/type.enum";
 
-export interface ILink {
+export interface IFile {
   id?: number;
 
   url: string;
 
-  urlLocal?: string;
   thumb?: string;
 
   // typeLink?: LinkEnum;
@@ -24,7 +23,7 @@ export interface ILink {
 
   updatedAt?: Date;
 }
- 
+
 export interface ICreateArticle {
   title?: string;
   thumbnail?: string;
@@ -36,6 +35,7 @@ export interface ICreateArticle {
   status?: ArticleStatusEnum;
   socialTargets?: ISocialTarget[];
   user?: IUser;
+  files?: IFile[];
 }
 export interface IUpdateArticle extends ICreateArticle {
   id?: number;

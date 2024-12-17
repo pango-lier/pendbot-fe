@@ -1,4 +1,3 @@
-import { deleteSocial } from "api/socials/delete";
 import React, { useEffect, useState } from "react";
 import ReactSelect from "react-select";
 import {
@@ -12,44 +11,46 @@ import {
   ModalHeader,
 } from "reactstrap";
 import { ACTION_ENUM } from "utility/enum/actions";
-
-import { notifyError, notifySuccess } from "utility/notify";
-
-import { IRow } from "../columns";
-import { createArticle } from "../../../../../api/articles/create";
-import { updateArticle } from "../../../../../api/articles/update";
-import { deleteArticle } from "../../../../../api/articles/delete";
 import {
   enumToFormatSelected,
   enumToFormatSelectOptions,
 } from "utility/helper/enum";
-import { ArticleStatusEnum } from "api/articles/enum/type.enum";
-import FileItem from "./FileManager";
-import FileManager from "./FileManager";
-import { IFile } from "api/articles/type/type.interface";
+import { notifyError, notifySuccess } from "utility/notify";
+
+import { IRowChild } from "../columns";
+import { IRow } from "../../../columns";
+import { updateSocialTarget } from "api/socialTargets/update";
+import { deleteSocialTarget } from "api/socialTargets/delete";
+import { createSocialTarget } from "api/socialTargets/create";
+import { SocialTargetEnum } from "api/socialTargets/enum/type.enum";
 
 interface IModalGroupProps {
-  row: IRow | undefined;
+  parent: IRow;
+  row: IRowChild | undefined;
   isOpenModalGroup: boolean;
   setIsOpenModalGroup: Function;
   action: ACTION_ENUM;
   onHandle: Function;
 }
-const ModalUser = ({
+const ModalGroup = ({
   isOpenModalGroup,
   setIsOpenModalGroup,
   row,
+  parent,
   action,
   onHandle,
 }: IModalGroupProps) => {
+  const [type, setType] = useState<SocialTargetEnum>(SocialTargetEnum.Personal);
+
   const [styleAction, setStyleAction] = useState<
     React.CSSProperties | undefined
   >();
-  const [data, setData] = useState<IRow>();
+  const [data, setData] = useState<IRowChild | undefined>();
   useEffect(() => {
     // fetchGroups();
     if (row) {
       setData(row);
+      setType(row?.targetType || SocialTargetEnum.Personal);
     }
   }, []);
 
@@ -58,10 +59,20 @@ const ModalUser = ({
       setStyleAction({ pointerEvents: "none", opacity: "0.7" });
   }, [action]);
 
-  const onChangeName = (e: React.ChangeEvent<HTMLInputElement> | any, name) => {
+  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>, name) => {
     if (e && e?.target) {
       const _d: any = { ...data };
       setData({ ..._d, [name]: e.target.value });
+    }
+  };
+
+  const onChangeType = (e) => {
+    setType(e.value);
+    setData({ ...data, targetType: e.value });
+  };
+
+  const onChangeGroupType = (e) => {
+    if (e) {
     }
   };
 
@@ -72,7 +83,12 @@ const ModalUser = ({
       switch (action) {
         case ACTION_ENUM.Create:
           if (!data) return;
-          const group = await createArticle(data);
+          const group = await createSocialTarget({
+            name: data?.name || "",
+            targetType: data?.targetType,
+            link: data?.link,
+            social: { id: parent.id },
+          });
           setIsOpenModalGroup(!isOpenModalGroup);
           onHandle(group.data);
 
@@ -80,19 +96,16 @@ const ModalUser = ({
         case ACTION_ENUM.Edit:
           if (!row?.id) return;
           if (!data) return;
-          const update = await updateArticle(row?.id, {
-            ...data,
-            userId: +(row?.userId || 0),
-          });
+          const update = await updateSocialTarget(row?.id, data);
           setIsOpenModalGroup(!isOpenModalGroup);
           onHandle(update.data);
 
           break;
         case ACTION_ENUM.Delete:
           if (!row?.id) return;
-          const destroy = await deleteArticle(row?.id);
+          const destroy = await deleteSocialTarget(row?.id);
           setIsOpenModalGroup(!isOpenModalGroup);
-          onHandle(row);
+          onHandle({ id: row?.id });
 
           break;
         default:
@@ -103,92 +116,56 @@ const ModalUser = ({
     }
   };
 
-  const onChangeFile = (files: IFile[]) => {
-    setData({ files: [...files] });
-  };
-
   return (
     <div>
       <Modal
-        size='xl'
         isOpen={isOpenModalGroup}
         toggle={() => setIsOpenModalGroup(!isOpenModalGroup)}
       >
         <ModalHeader toggle={() => setIsOpenModalGroup(!isOpenModalGroup)}>
-          {`Article (${action})`}
+          {`Social target (${action})`}
         </ModalHeader>
         <ModalBody>
           <Form className="auth-register-form mt-2" style={styleAction}>
             <div className="mb-1">
-              <Label className="form-label" for="register-title">
-                Title
-              </Label>
-              <Input
-                defaultValue={data?.title}
-                type="text"
-                id="register-title"
-                placeholder="johndoe"
-                autoFocus
-                onChange={(e) => onChangeName(e, "title")}
-              />
-            </div>
-            <div className="mb-1">
               <Label className="form-label" for="register-type">
-                Status
+                Social
               </Label>
               <ReactSelect
                 id="register-type"
-                value={enumToFormatSelected(ArticleStatusEnum, data?.status)}
+                value={enumToFormatSelected(SocialTargetEnum, type)}
                 className="react-select"
-                options={enumToFormatSelectOptions(ArticleStatusEnum)}
-                onChange={(e) =>
-                  onChangeName({ target: { value: e?.value } }, "status")
-                }
+                options={enumToFormatSelectOptions(SocialTargetEnum)}
+                onChange={(e) => onChangeType(e)}
                 isClearable={true}
               />
             </div>
             <div className="mb-1">
-              <Label className="form-label" for="register-url">
-                Url
+              <Label className="form-label" for="setIsOpenModalGroup-name">
+                Name
               </Label>
               <Input
-                defaultValue={data?.url}
+                defaultValue={data?.name}
                 type="text"
-                id="register-url"
+                id="setIsOpenModalGroup-name"
+                placeholder="johndoe"
                 autoFocus
-                onChange={(e) => onChangeName(e, "url")}
+                onChange={(e) => onChangeName(e, "name")}
               />
             </div>
             <div className="mb-1">
-              <Label className="form-label" for="register-tags">
-                Tags
+              <Label className="form-label" for="setIsOpenModalGroup-link">
+                Link *
               </Label>
               <Input
-                defaultValue={data?.tags}
-                id="register-tags"
+                defaultValue={data?.link}
+                type="text"
+                id="setIsOpenModalGroup-link"
+                placeholder="url ..."
                 autoFocus
-                type="textarea"
-                onChange={(e) => onChangeName(e, "tags")}
+                onChange={(e) => onChangeName(e, "link")}
               />
-            </div>
-
-            <FileManager
-              files={data?.files || []}
-              onFilesChange={onChangeFile}
-            />
-
-            <div className="mb-1">
-              <Label className="form-label" for="register-description">
-                Description
-              </Label>
-              <Input
-                defaultValue={data?.description}
-                id="register-description"
-                type="textarea"
-                row={6}
-                autoFocus
-                onChange={(e) => onChangeName(e, "description")}
-              />
+              <small>example:  https://www.facebook.com/profile.php?id=100089781420908</small>
             </div>
           </Form>
         </ModalBody>
@@ -204,4 +181,4 @@ const ModalUser = ({
 
 //ModalGroup.propTypes = {};
 
-export default ModalUser;
+export default ModalGroup;
