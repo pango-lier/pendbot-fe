@@ -110,7 +110,7 @@ const ModalUser = ({
   return (
     <div>
       <Modal
-        size='xl'
+        size="xl"
         isOpen={isOpenModalGroup}
         toggle={() => setIsOpenModalGroup(!isOpenModalGroup)}
       >
@@ -119,75 +119,90 @@ const ModalUser = ({
         </ModalHeader>
         <ModalBody>
           <Form className="auth-register-form mt-2" style={styleAction}>
-            <div className="mb-1">
-              <Label className="form-label" for="register-title">
-                Title
-              </Label>
-              <Input
-                defaultValue={data?.title}
-                type="text"
-                id="register-title"
-                placeholder="johndoe"
-                autoFocus
-                onChange={(e) => onChangeName(e, "title")}
-              />
+            <div className="row">
+              {" "}
+              <div className="col-6 row">
+                <div className="mb-1">
+                  <Label className="form-label" for="register-title">
+                    Title
+                  </Label>
+                  <Input
+                    defaultValue={data?.title}
+                    type="text"
+                    id="register-title"
+                    placeholder="johndoe"
+                    autoFocus
+                    onChange={(e) => onChangeName(e, "title")}
+                  />
+                </div>
+
+                <div className="mb-1">
+                  <Label className="form-label" for="register-url">
+                    Url
+                  </Label>
+                  <Input
+                    defaultValue={data?.url}
+                    type="text"
+                    id="register-url"
+                    autoFocus
+                    onChange={(e) => onChangeName(e, "url")}
+                  />
+                </div>
+                <div className="mb-1">
+                  <Label className="form-label" for="register-tags">
+                    Tags
+                  </Label>
+                  <Input
+                    defaultValue={data?.tags}
+                    id="register-tags"
+                    autoFocus
+                    type="textarea"
+                    onChange={(e) => onChangeName(e, "tags")}
+                  />
+                </div>
+              </div>
+              <div className="col-6">
+                <div className="mb-1">
+                  <Label className="form-label" for="register-type">
+                    Status
+                  </Label>
+                  <ReactSelect
+                    id="register-type"
+                    value={enumToFormatSelected(
+                      ArticleStatusEnum,
+                      data?.status
+                    )}
+                    className="react-select"
+                    options={enumToFormatSelectOptions(ArticleStatusEnum)}
+                    onChange={(e) =>
+                      onChangeName({ target: { value: e?.value } }, "status")
+                    }
+                    isClearable={true}
+                  />
+                </div>
+                <div className="mb-1">
+                  <Label className="form-label" for="register-description">
+                    Description
+                  </Label>
+                  <Input
+                    defaultValue={data?.description}
+                    id="register-description"
+                    type="textarea"
+                    rows={6}
+                    autoFocus
+                    onChange={(e) => onChangeName(e, "description")}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="mb-1">
-              <Label className="form-label" for="register-type">
-                Status
-              </Label>
-              <ReactSelect
-                id="register-type"
-                value={enumToFormatSelected(ArticleStatusEnum, data?.status)}
-                className="react-select"
-                options={enumToFormatSelectOptions(ArticleStatusEnum)}
-                onChange={(e) =>
-                  onChangeName({ target: { value: e?.value } }, "status")
-                }
-                isClearable={true}
-              />
-            </div>
-            <div className="mb-1">
-              <Label className="form-label" for="register-url">
-                Url
-              </Label>
-              <Input
-                defaultValue={data?.url}
-                type="text"
-                id="register-url"
-                autoFocus
-                onChange={(e) => onChangeName(e, "url")}
-              />
-            </div>
+
             <div className="mb-1">
               <Label className="form-label" for="register-tags">
-                Tags
+                Files
               </Label>
-              <Input
-                defaultValue={data?.tags}
-                id="register-tags"
-                autoFocus
-                type="textarea"
-                onChange={(e) => onChangeName(e, "tags")}
-              />
-            </div>
-
-            <FileManager
-              files={data?.files || []}
-              onFilesChange={onChangeFile}
-            />
-
-            <div className="mb-1">
-              <Label className="form-label" for="register-description">
-                Description
-              </Label>
-              <Input
-                defaultValue={data?.description}
-                id="register-description"
-                type="textarea"
-                row={6}
-                autoFocus
-                onChange={(e) => onChangeName(e, "description")}
+              <FileManager
+                files={data?.files || []}
+                onFilesChange={onChangeFile}
               />
             </div>
           </Form>

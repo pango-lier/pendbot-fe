@@ -7,21 +7,15 @@ export interface IFile {
 
   url: string;
 
-  thumb?: string;
+  local?: string | null;
 
-  // typeLink?: LinkEnum;
+  type?: string | null;
 
-  size?: number;
+  size?: number | null;
 
-  description?: string;
+  name?: string | null;
 
-  thumbnail?: string;
-
-  deletedAt?: Date;
-
-  createdAt?: Date;
-
-  updatedAt?: Date;
+  thumbnail?: string | null;
 }
 
 export interface ICreateArticle {

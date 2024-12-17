@@ -1,5 +1,6 @@
 import { IFile } from "api/articles/type/type.interface";
 import React from "react";
+import * as Icon from "react-feather";
 import {
   Card,
   CardImg,
@@ -10,18 +11,25 @@ import {
 } from "reactstrap";
 
 // Kiểu dữ liệu cho tệp
-interface FileItemProps extends IFile {}
+interface FileItemProps extends IFile {
+  handleFiles: (type: "up" | "down" | "delete" | "edit" | "create") => void;
+}
 
-const FileItem: React.FC<FileItemProps> = ({ url, thumb }) => {
+const FileItem: React.FC<FileItemProps> = ({
+  url,
+  thumbnail,
+  name,
+  handleFiles,
+}) => {
   const isVideo =
-    url.endsWith(".mp4") || url.endsWith(".avi") || url.endsWith(".mov");
+    url?.endsWith(".mp4") || url?.endsWith(".avi") || url?.endsWith(".mov");
 
   return (
-    <div className="file-item">
+    <div className="file-item border">
       <Card>
-        {thumb ? (
+        {thumbnail ? (
           // Nếu có thumb, hiển thị ảnh thu nhỏ
-          <CardImg top width="100%" src={thumb} alt="Thumb" />
+          <CardImg top width="100%" src={thumbnail} alt="Thumb" />
         ) : isVideo ? (
           // Nếu không có thumb và là video, hiển thị video
           <video controls width="100%">
@@ -33,10 +41,30 @@ const FileItem: React.FC<FileItemProps> = ({ url, thumb }) => {
           <CardImg top width="100%" src={url} alt="Image" />
         )}
         <CardBody>
-          <CardText style={{ fontSize: "12px" }}>{url}</CardText>
-          <Button href={url} target="_blank" color="primary">
-            Download
-          </Button>
+          <CardText style={{ fontSize: "12px" }}>{name}</CardText>
+          <div className="d-flex justify-content-around">
+            <Icon.Download
+              onClick={() => {
+                window.open(url);
+              }}
+            />
+            <Icon.Trash
+              className="text-danger cursor-pointer"
+              onClick={() => handleFiles("delete")}
+            />
+            <Icon.ArrowUp
+              className="text-success cursor-pointer"
+              onClick={() => handleFiles("up")}
+            />
+            <Icon.ArrowDown
+              className="cursor-pointer"
+              onClick={() => handleFiles("down")}
+            />
+            <Icon.Edit
+              className="cursor-pointer"
+              onClick={() => handleFiles("edit")}
+            />
+          </div>
         </CardBody>
       </Card>
     </div>
