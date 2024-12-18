@@ -104,7 +104,7 @@ const ModalUser = ({
   };
 
   const onChangeFile = (files: IFile[]) => {
-    setData({ files: [...files] });
+    setData({ ...data, files: [...files] });
   };
 
   return (
