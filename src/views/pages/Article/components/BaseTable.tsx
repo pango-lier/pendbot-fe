@@ -7,7 +7,7 @@ import {
   getExpandedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Card, CardBody, CardHeader, Input, Table } from "reactstrap";
+import { Button, Card, CardBody, CardHeader, Input, Table } from "reactstrap";
 import IconTextPagination from "./PaginationIconText";
 import { ACTION_ENUM } from "utility/enum/actions";
 import ModalUser from "./actions/ModalPopup";
@@ -23,6 +23,7 @@ const BaseTable = () => {
   const [perPage, setPerPage] = useState<number>(10);
   const [total, setTotal] = useState<number>(0);
   const [action, setAction] = useState<ACTION_ENUM>(ACTION_ENUM.None);
+  const [rowSelection, setRowSelection] = useState({})
 
   let timeout;
 
@@ -116,14 +117,24 @@ const BaseTable = () => {
     ),
     state: {
       expanded,
+      rowSelection
     },
     getRowCanExpand: () => true,
     onExpandedChange: setExpanded,
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
+    onRowSelectionChange: setRowSelection, // Handle row selection state changes
     debugTable: true,
   });
   const rerender = React.useReducer(() => ({}), {})[1];
+
+  const pushToSocials=()=>{
+    const selectedRows = table.getSelectedRowModel().rows
+
+    // Extract data from selected rows
+    const selectedData = selectedRows.map((row) => row.original)
+    console.log(selectedData)
+  }
   return (
     <>
       <Card className="table-card">
@@ -150,7 +161,9 @@ const BaseTable = () => {
               value={searchInput}
             />
           </div>
-          <>Action</>
+          <Button color="primary" onClick={(e) => pushToSocials()}>
+            Push to Socials
+          </Button>
         </CardHeader>
         <CardBody className="table-responsive">
           <Table>
