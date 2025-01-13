@@ -13,6 +13,7 @@ import { ACTION_ENUM } from "utility/enum/actions";
 import ModalUser from "./actions/ModalPopup";
 import { Loader } from "react-feather";
 import { getArticles } from "../../../../api/articles/gets";
+import PushToSocials from "./PushToSocials/PushToSocials";
 
 const BaseTable = () => {
   const [isOpenModalGroup, setIsOpenModalGroup] = useState<boolean>(false);
@@ -23,7 +24,10 @@ const BaseTable = () => {
   const [perPage, setPerPage] = useState<number>(10);
   const [total, setTotal] = useState<number>(0);
   const [action, setAction] = useState<ACTION_ENUM>(ACTION_ENUM.None);
-  const [rowSelection, setRowSelection] = useState({})
+  const [rowSelection, setRowSelection] = useState({});
+
+  const [isOpenModalPushToSocial, setIsOpenModalPushToSocial] =
+    useState<boolean>(false);
 
   let timeout;
 
@@ -42,7 +46,7 @@ const BaseTable = () => {
             limit: perPage,
             offset: 0,
           },
-          e.target.value,
+          e.target.value
         );
       }, 320);
     }
@@ -91,18 +95,18 @@ const BaseTable = () => {
     });
   };
 
-  const fetchData = async ({ limit, offset }, q = '') => {
+  const fetchData = async ({ limit, offset }, q = "") => {
     try {
       setLoading(true);
       const response = await getArticles({
         limit,
         offset,
-        sorted: [{ id: 'id', desc: true }],
+        sorted: [{ id: "id", desc: true }],
         q,
       });
       setData(response.data.result);
       setTotal(response.data.total);
-    } catch (error) { }
+    } catch (error) {}
     setLoading(false);
   };
   useEffect(() => {
@@ -117,7 +121,7 @@ const BaseTable = () => {
     ),
     state: {
       expanded,
-      rowSelection
+      rowSelection,
     },
     getRowCanExpand: () => true,
     onExpandedChange: setExpanded,
@@ -128,12 +132,16 @@ const BaseTable = () => {
   });
   const rerender = React.useReducer(() => ({}), {})[1];
 
-  const pushToSocials=()=>{
-    const selectedRows = table.getSelectedRowModel().rows
+  const pushToSocials = () => {
+    const selectedRows = table.getSelectedRowModel().rows;
 
     // Extract data from selected rows
-    const selectedData = selectedRows.map((row) => row.original)
-    console.log(selectedData)
+    const selectedData = selectedRows.map((row) => row.original);
+    console.log(selectedData);
+    setIsOpenModalPushToSocial(true);
+  };
+  const onHandlePushToSocials=()=>{
+
   }
   return (
     <>
@@ -145,8 +153,9 @@ const BaseTable = () => {
               htmlFor="searchInput"
             >
               <Loader
-                className={`mr-2 ${loading ? 'cursor-not-allowed gly-spin' : 'cursor-pointer'
-                  }`}
+                className={`mr-2 ${
+                  loading ? "cursor-not-allowed gly-spin" : "cursor-pointer"
+                }`}
                 color="blue"
                 size={24}
               />
@@ -179,7 +188,7 @@ const BaseTable = () => {
                           width:
                             header.column.columnDef.size !== 0
                               ? `${header.column.columnDef.size}%`
-                              : 'auto',
+                              : "auto",
                           maxWidth: header.column.columnDef.maxSize,
                           minWidth: header.column.columnDef.minSize,
                         },
@@ -188,9 +197,9 @@ const BaseTable = () => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </th>
                   ))}
                 </tr>
@@ -209,7 +218,7 @@ const BaseTable = () => {
                             width:
                               cell.column.columnDef.size !== 0
                                 ? `${cell.column.columnDef.size}%`
-                                : 'auto',
+                                : "auto",
                             maxWidth: cell.column.columnDef.maxSize,
                             minWidth: cell.column.columnDef.minSize,
                           },
@@ -241,6 +250,14 @@ const BaseTable = () => {
             action={action}
             isOpenModalGroup={isOpenModalGroup}
             setIsOpenModalGroup={(value) => setIsOpenModalGroup(value)}
+          />
+        )}
+        {isOpenModalPushToSocial && (
+          <PushToSocials
+            rows={table.getSelectedRowModel().rows}
+            onHandle={onHandlePushToSocials}
+            isOpen={isOpenModalPushToSocial}
+            setIsOpen={(value) => setIsOpenModalPushToSocial(value)}
           />
         )}
       </Card>
