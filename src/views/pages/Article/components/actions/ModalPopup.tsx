@@ -135,7 +135,19 @@ const ModalUser = ({
                     onChange={(e) => onChangeName(e, "title")}
                   />
                 </div>
-
+                <div className="mb-1">
+                  <Label className="form-label" for="register-pin">
+                    Pin
+                  </Label>
+                  <Input
+                    defaultValue={data?.title}
+                    type="text"
+                    id="register-pin"
+                    placeholder="pin"
+                    autoFocus
+                    onChange={(e) => onChangeName(e, "pin")}
+                  />
+                </div>
                 <div className="mb-1">
                   <Label className="form-label" for="register-url">
                     Url

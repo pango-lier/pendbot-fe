@@ -22,6 +22,7 @@ export interface ICreateArticle {
   title?: string;
   thumbnail?: string;
   url?: string;
+  pin?: string;
   description?: string;
   tags?: string;
   active?: boolean;

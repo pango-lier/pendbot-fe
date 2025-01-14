@@ -7,7 +7,7 @@ export interface ICreate {
   articles?: IUpdateArticle[];
 }
 
-export const createProxy = async (params: ICreate) => {
+export const createSocialTargetArticle = async (params: ICreate) => {
   return await hookApi("post", `publish-socials/articles`, {
     params,
     _success: true,

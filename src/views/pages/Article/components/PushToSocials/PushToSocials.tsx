@@ -42,6 +42,7 @@ const PushToSocials = ({
     const res = await findAllRawSocialTarget();
     const options = res.data.map((i) => {
       return {
+        id: i.id,
         value: i.id,
         label: i.name,
       };
@@ -78,7 +79,7 @@ const PushToSocials = ({
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={(e) => onHandle(e)}>
+          <Button color="primary" onClick={(e) => onHandle(socialSelected)}>
             Publish
           </Button>
         </ModalFooter>

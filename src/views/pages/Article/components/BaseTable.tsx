@@ -14,6 +14,8 @@ import ModalUser from "./actions/ModalPopup";
 import { Loader } from "react-feather";
 import { getArticles } from "../../../../api/articles/gets";
 import PushToSocials from "./PushToSocials/PushToSocials";
+import { createSocialTargetArticle } from "api/publish-article/createSocialTargetArticle";
+import { IArticle, IUpdateArticle } from "api/articles/type/type.interface";
 
 const BaseTable = () => {
   const [isOpenModalGroup, setIsOpenModalGroup] = useState<boolean>(false);
@@ -133,16 +135,19 @@ const BaseTable = () => {
   const rerender = React.useReducer(() => ({}), {})[1];
 
   const pushToSocials = () => {
-    const selectedRows = table.getSelectedRowModel().rows;
-
-    // Extract data from selected rows
-    const selectedData = selectedRows.map((row) => row.original);
-    console.log(selectedData);
     setIsOpenModalPushToSocial(true);
   };
-  const onHandlePushToSocials=()=>{
-
-  }
+  const onHandlePushToSocials = (socialTargets) => {
+    setIsOpenModalPushToSocial(false);
+    const selectedRows = table.getSelectedRowModel().rows;
+    const selectedData = selectedRows.map((row) => row.original);
+    createSocialTargetArticle({
+      articles: selectedData,
+      socialTargets,
+    }).then(() => {
+      setRowSelection({});
+    });
+  };
   return (
     <>
       <Card className="table-card">
